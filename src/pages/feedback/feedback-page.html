@@ -1,0 +1,71 @@
+<link rel="import" href="../../../bower_components/paper-material/paper-material.html">
+<link rel="import" href="../../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../../bower_components/paper-input/paper-textarea.html">
+<link rel="import" href="../../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../header.html">
+
+<dom-module id="feedback-page">
+  <template>
+    <style include="app-styles">
+      :host {
+        display: block;
+      }
+      #input {
+        margin: 24px 0;
+      }
+      iron-icon {
+        --iron-icon-height: 12px;
+        --iron-icon-width: 12px;
+        vertical-align: super;
+      }
+    </style>
+    <paper-material>
+      <div class="font-title">
+        Feedback
+      </div>
+      <paper-textarea
+        id="input"
+        required
+        char-counter
+        label=""
+        minlength="10"
+        maxlength="500">
+      </paper-textarea>
+      <paper-button class="primary-button" raised on-tap="sendFeedback">Send</paper-button>
+    </paper-material>
+    <paper-material>
+      <div class="font-subhead">
+        Find a bug?
+      </div>
+      <div>
+        Please report it on our
+        <a href="https://github.com/jifalops/app-starter/issues/new"
+          target="_blank">issue tracker<iron-icon icon="launch"></iron-icon></a>
+      </div>
+    </paper-material>
+  </template>
+
+  <script>
+  Polymer({
+    is: 'feedback-page',
+    properties: {
+      auth: Object
+    },
+    sendFeedback: function() {
+      if (!this.auth) {
+        showInfoToast('Please login to leave feedback.');
+        return;
+      }
+      var feedback = this.$.input.value;
+      if (feedback && feedback.length >= 10 && feedback.length <= 500) {
+        db.users.sendFeedback(this.auth.uid, feedback, function () {
+          showSuccessToast('Feedback sent!');
+          this.$.input.value = "";
+        }.bind(this), showServerErrorToast);
+      } else {
+        this.$.input.invalid = true;
+      }
+    }    
+  });
+  </script>
+</dom-module>

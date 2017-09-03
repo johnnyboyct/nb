@@ -1,0 +1,14 @@
+{
+  "database": {
+    "rules": "internal/rules.json"
+  },
+  "hosting": {
+    "public": "build/bundled-es6",
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}

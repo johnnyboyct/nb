@@ -1,0 +1,170 @@
+<link rel="import" href="/bower_components/google-apis/google-maps-api.html">
+<link rel="import" href="/bower_components/paper-input/paper-input.html">
+<link rel="import" href="/bower_components/iron-form/iron-form.html">
+<link rel="import" href="/bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="/bower_components/paper-checkbox/paper-checkbox.html">
+<link rel="import" href="/bower_components/paper-button/paper-button.html">
+<link rel="import" href="/bower_components/iron-input/iron-input.html">
+<link rel="import" href="/bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="/bower_components/geo-location/geo-location.html">
+<link rel="import" href="/bower_components/iron-list/iron-list.html">
+<link rel="import" href="/bower_components/iron-image/iron-image.html">
+<link rel="import" href="/bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="/bower_components/paper-elements/paper-elements.html">
+<!--
+shows incentives
+-->
+
+<!--
+Example: Use the nb-incentives
+```html
+<nb-incentives></nb-incentives>
+```
+
+### Custom properties
+
+Custom properties are there to provide access into the Shadow DOM
+and act as guides for how to best succeed while customizing your element.
+
+Key                              | Description                            | Usage/Defaults
+---------------------------------|----------------------------------------|--------------------
+`--nb-incentives-width`     | Width of the element                   | 256px
+
+
+@group nb
+@element nb-incentives
+@demo
+@test test/index.html
+-->
+
+<link rel="import" href="nb-incentives-styles.html">
+
+<dom-module id="nb-incentives">
+
+  <template>
+
+    <style include="nb-incentives-styles"></style>
+<geo-location latitude="{{latitude}}" longitude="{{longitude}}" id="geo"></geo-location>
+<ul>
+  <li>Latitude: [[latitude]]</li>
+  <li>Longitude: [[longitude]]</li>
+</ul>
+
+
+            <codelabs-card heading="Estimated Electricity Production" summary="[[size_premimum]]" category="[[item.category]]"
+                          difficulty="[[item.difficulty]]" duration="[[item.duration}}" tags="[[item.tags]]"
+                          published="[[item.published]]" url="[[item.url]]" currenturl="[[route.prefix]][[route.path]]"
+                          ></codelabs-card>
+
+
+
+    <google-maps-api api-key="{{google_maps_api_key}}" version="3" on-api-load="_mapsLoaded"></google-maps-api>
+[[energy]]
+
+
+
+<paper-card class="rate">
+  <div class="card-content">
+    <div class="rate-header">Rate this album</div>
+    <div class="rate-name">Mac Miller</div>
+    <div>Live from space</div>
+  </div>
+  <div class="card-actions">
+    <paper-icon-button class="rate-icon" icon="star"></paper-icon-button>
+    <paper-icon-button class="rate-icon" icon="star"></paper-icon-button>
+    <paper-icon-button class="rate-icon" icon="star"></paper-icon-button>
+    <paper-icon-button class="rate-icon" icon="star"></paper-icon-button>
+    <paper-icon-button class="rate-icon" icon="star"></paper-icon-button>
+  </div>
+  <div class="rate-image"></div>
+</paper-card>
+
+
+    <iron-list items="[[energy.result]]" as="item" selection-enabled multi-selection>
+      <template>
+        <div>
+          <div class$="[[getClassForItem(item, selected)]]" tabindex$="[[tabIndex]]">
+            <iron-image class="avatar" sizing="contain" src="[[item.image]]"></iron-image>
+            <div class="pad">
+              <div class="primary">[[item.category_name]]</div>
+              <div class="shortText">[[item.program_name]]</div>
+              <div class="longText">[[item.summary]]</div>
+            </div>
+            <iron-icon icon$="[[iconForItem(item)]]"></iron-icon>
+          </div>
+        </div>
+      </template>
+  </iron-list>
+
+  <iron-ajax id="energy"
+  on-error="_handleAjaxError"
+  url="https://developer.nrel.gov/api/energy_incentives/v2/dsire.json"
+  handle-as="json"
+  on-response="_handleAjaxEventfunction"
+  loading-changed="_handleAjaxLoading"
+  debounce-duration="300"
+  on-response="_onAjaxResponse"
+  last-response="{{energy}}">
+</iron-ajax>`
+
+  <iron-form id="form1">
+
+
+
+    <paper-input type="text" name="address" id="address" required label="Address" value="{{address}}">
+      <iron-icon icon="mail" slot="prefix"></iron-icon>
+    </paper-input>
+    <br><br>
+    <paper-button raised on-click="[[initialize()]]" id="update_address">Update Address</paper-button>
+    <paper-button raised on-tap="_calculateValue()" id="calculate">Calculate</paper-button>
+    <br>
+    <div class="output"></div>
+  </iron-form>
+
+
+
+
+  <div class="thumbnail">
+    <div style="width: 100%; height: 500px;" id="mapDiv"></div>
+    <div id="mapDiv45"></div>
+    <div style="display: none;" id="mapDivImage"> </div>
+    <div id="draggable"><img src="img/compass.png"></div>
+    <div class="caption-full">
+    </div>
+
+
+
+    <div class="text-right">
+      <a id="show-hide-advanced-fields" href="#">Show / Hide Advanced Fields</a>
+    </div>
+    <div id="advanced-fields">
+      <div id='mapcontrols'>
+        <input type="button" class="btn btn-default" id="btnTerrain" value="Terrain">
+        <input type="button" class="btn btn-default" id="btnRoadmap" value="Roadmap">
+        <input type="button" class="btn btn-default" id="btnSatellite" value="Satellite">
+        <input type="button" class="btn btn-default" id="btnHybrid" value="Hybrid">
+        <input type="button" class="btn btn-default" id="btnCompass" value="Compass">
+        <input type="button" class="btn btn-default" id="btnInspector" value="Inspect Roof">
+      </div>
+
+      <br /> INPUTS:
+      <br />
+      <div class="form-group" style="margin-right: 20px;">
+        Orientation of the roof: <input id="azimuth" size="4" value="180" /> (<a href="#" onclick="$('#draggable').toggle();">Show/Hide Compass</a>)
+      </div>
+      <div class="form-group" style="margin-right: 20px;">
+        Tilt: <input id="tilt" size="4" value="20" />
+      </div>
+      <div class="form-group" style="margin-right: 20px;">
+        PPA Price: <input id="ppa" size="4" value="0.15" />
+      </div>
+      <br><br>
+    </div>
+    <div id="results"></div>
+    <div id="results2"></div>
+    <div id="results3"></div>
+  </div>
+  </template>
+
+  <script src="nb-incentives.js"></script>
+</dom-module>

@@ -1,0 +1,59 @@
+<dom-module id="nb-incentives-styles">
+  <template>
+    <style>
+    :host {
+        var(--nb-incentives-width, 256px);
+        display: block;
+        box-sizing: border-box;
+    }
+
+    h1 {
+      background-color: red;
+      width: --nb-incentives-width;
+    }
+
+    #draggable {
+	position: absolute;
+	width: 150px;
+	height: 150px;
+	padding: 0.5em;
+	left: 100px;
+	top: 200px;
+	display: none;}
+
+#mapDiv45 {
+	display: none;
+	width: 250px;
+	height: 250px;
+	padding: 0.5em;
+	position: absolute;
+	border: 10px solid #FFFFFF;
+	right: 0px;
+	top: 600px;
+    }
+
+#mapDivImage {
+	width: 400px;
+	height: 400px;
+	padding: 0.5em;
+	position: absolute;
+	border: 2px solid #eeeeee;}
+
+#mapDiv {
+	height: 70%;
+	width: 100% }
+
+
+#draggable {
+	width: 150px;
+	height: 150px;
+	padding: 0.5em; }
+
+#advanced-fields, #mapcontrols {
+	display: none;
+}
+
+#results, #results2, #results3 { display: block; }
+    </style>
+  </template>
+</dom-module>

@@ -1,0 +1,776 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+
+<link rel="import" href="theme-styles.html">
+
+<!--
+  Element styles setup defaults for elements, including some classes and attributes.
+-->
+<dom-module id="nb-styles">
+    <template>
+        <style include="theme-styles">
+
+            /*------------------------------------------------------------------
+            --> Page Header
+            ------------------------------------------------------------------*/
+
+            /* --> Header Base -----------------------------------------------*/
+
+            header#page-header {
+                width: 100%;
+                position: relative;
+                display: inline-block;
+
+            }
+
+            #header-top{
+                background:rgba(0,0,0,0.9);
+                margin: 0 auto;
+                position: relative;
+                width: 100%;
+                height: 100%;
+            }
+
+            #header-middle {
+                background-color: rgba(255,255,255,0.66);
+                background-repeat: no-repeat;
+                background-position: center;
+                background-size: contain;
+                margin: 0 auto;
+                position: relative;
+                width: 100%;
+                height: 100%;
+                padding: 5px 0 5px 0 ;
+                text-align: center;
+            }
+
+            #header-bottom{
+                margin: 0 auto;
+                position: relative;
+                width: 100%;
+                height: 100%;
+                padding:0;
+            }
+
+            /* --> Header Logo -----------------------------------------------*/
+
+            a#logo-header {
+                display: inline-block;
+                width: 100%;
+                position: relative;
+                padding: 10px 0;
+            }
+
+            /* --> Header Links ----------------------------------------------*/
+
+            ul.head-links {
+                list-style: none;
+                margin: 0;
+                display:block;
+                padding-top: 0;
+                font-size: 1.4em;
+            }
+
+            ul.head-links li {
+                display: inline-block;
+                vertical-align: middle;
+                font-size: inherit;
+            }
+
+            span#header-date {
+                color: #ece4d5;
+                cursor: default;
+            }
+
+            #header-right a.city_site {
+                display: none;
+            }
+
+            a.head-link {
+                display: inline-block;
+                font-size: inherit;
+                color: #ece4d5;
+                margin-right: 25px;
+                font-weight: normal;
+                margin-bottom: 0;
+            }
+
+            a.head-link:hover{
+                color: #ece4d5;
+            }
+
+            a#mywh{
+                font-style: italic;
+            }
+
+            .head-links .fontsize {
+                margin-right: 25px;
+                position: relative;
+            }
+
+            /* --> Header Weather ----------------------------------------------*/
+
+            span.temperature{
+                color: #ece4d5;
+            }
+
+            .weather-cont {
+                margin-right: 17px;
+            }
+
+            .weather-cont img{
+                width: 22px;
+                height: 22px;
+                vertical-align: middle;
+                margin-right: 5px;
+            }
+
+            /*------------------------------------------------------------------
+            --> Background Image
+            ------------------------------------------------------------------*/
+            #big-bg-image {display: block;position: fixed;top: 0;left: 0;width: 100%;z-index: -1;overflow: hidden;background-color: #ffffff;}
+
+            #big-bg-image img {
+                width: 100%;
+                opacity: 0.2;
+                -webkit-transition: all .2s ease-in-out;
+            }
+
+            /*------------------------------------------------------------------
+            --> Main Navigation
+            ------------------------------------------------------------------*/
+
+            /* --> Main Navigation Container ---------------------------------*/
+
+            section#top-nav {
+                background:rgba(164,30,52,0.90);
+                min-height: 47px;
+            }
+
+            /* Remove menu padding for mobile */
+            section#top-nav .nav-row .columns { padding: 0; }
+
+            /* Remove Foundation default background color for top-bar */
+            nav.main-nav, nav.main-nav.expanded {
+                background: none;
+                width: 100%;
+            }
+
+            /* --> Main Navigation Title -------------------------------------*/
+
+            /* Show the navigation Title for mobile */
+            nav.main-nav .name {
+                display: block;
+            }
+
+
+            /* --> Main Navigation Item Link ---------------------------------*/
+
+            nav.main-nav ul li.nav-item a {
+                font-size: 1.2em;
+                font-weight: bold;
+                white-space: normal;
+                background: transparent;
+                text-transform: uppercase;
+                transition: background-color .9s ease-out, color .6s ease-out, padding .6s ease-out, font-size .3s ease-out;
+                -o-transition: background-color .9s ease-out, color .6s ease-out, padding .6s ease-out, font-size .3s ease-out;
+                -moz-transition: background-color .9s ease-out, color .6s ease-out, padding .6s ease-out, font-size .3s ease-out;
+                -webkit-transition: background-color .9s ease-out, color .6s ease-out, padding .6s ease-out, font-size .3s ease-out;
+            }
+
+            nav.main-nav ul li.nav-item a:hover {
+                text-decoration: none;
+                background:rgba(255,90,71,0.1);
+            }
+
+            /* Active Item Link */
+            nav.main-nav ul li.active a {
+                background:rgba(255,90,71,0.1);
+            }
+
+
+            /* --> Main Navigation Mobile Styles -----------------------------*/
+
+            /* Main Navigation Title */
+            .main-nav ul.title-area .mainnav-mobile-title {
+                font-family: 'Lato', sans-serif;
+                text-transform: none;
+                line-height: 40px;
+            }
+
+            .main-nav ul.title-area .mainnav-mobile-title:hover {
+                background: none;
+            }
+
+            /* Menu collapse/expand link icon */
+            nav.main-nav .toggle-topbar.menu-icon a {
+                font-family: 'Lato', sans-serif;
+                font-size: 1.4em;
+                text-indent: -70px;
+                line-height: 30px;
+            }
+
+            nav.main-nav .toggle-topbar.menu-icon a:hover {
+                background: none;
+            }
+
+            /* Mobile Display Back Link */
+            nav.main-nav .dropdown li.title h5 a {
+                font-size: inherit;
+                font-weight: bold;
+            }
+
+            /* Mobile Display Back Link (Mega-Menu) */
+            nav.main-nav div.mega-menu li.title h5 a:hover {
+                background: #eee;
+            }
+
+            /* Mobile-Mode Back Link (Mega-Menu) */
+            nav.main-nav .mega-menu li.title h5 a {
+                color: #1a1a1a;
+            }
+
+
+            /*------------------------------------------------------------------
+            --> Main Navigation Menus
+            ------------------------------------------------------------------*/
+
+            /* Dropdown Menu Item Link */
+            nav.main-nav .dropdown li.nav-item a {
+                font-family: 'Lato', sans-serif;
+                text-transform: none;
+                font-size: 0.9em;
+                line-height: 18px;
+                background: none;
+                padding: 10px 15px;
+                border-bottom: 1px solid #444;
+            }
+
+            nav.main-nav .dropdown li.nav-item a:hover {
+                background: #a41e34;
+                padding-left: 30px;
+                color: white;
+            }
+
+
+            /* --> Main Navigation Dropdown Container ------------------------*/
+
+            nav.main-nav .dropdown {
+                border: 1px solid #333;
+            }
+
+            /* Dropdown Menu Last Item Link */
+            nav.main-nav .dropdown li.nav-item.last a {
+                border-bottom: 0;
+            }
+
+            /*------------------------------------------------------------------
+            --> Side Navigation
+            ------------------------------------------------------------------*/
+
+            /* --> Side Navigation Heading -----------------------------------*/
+
+            .page-nav-heading {
+                cursor: default;
+                color: #a41e34;
+                font-size: 2.5em;
+                font-weight: bold;
+                padding-left: 24px;
+                margin-bottom: 10px;
+                text-shadow: 0 1px 0 #fff;
+                margin-top:0px;
+                text-transform: uppercase;
+            }
+
+            #side-nav {
+                margin-bottom: 20px;
+                background-color: #fff;
+                padding: 15px 0 0;
+                -webkit-box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.58);
+                -moz-box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.58);
+                box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.58);
+                float: left;
+                width: 100%;
+            }
+
+            /* --> Side Navigation List ---------------------------------------*/
+
+            nav#side-nav ul.side-nav-list {
+                margin-bottom: 20px;
+            }
+
+            /* --> Side Navigation Item ---------------------------------------*/
+
+            nav#side-nav .sf-vertical,
+            nav#side-nav .sf-vertical li {
+                width: 100%;
+            }
+
+            nav#side-nav .sf-menu li {
+                background: #fff;
+                padding: 0;
+            }
+
+            /* --> Side Navigation Item Link ----------------------------------*/
+
+            nav#side-nav .sf-menu a {
+                color: #a41e34;
+                border: 0;
+                padding: 10px 25px;
+                line-height: 20px;
+                font-size: 1.6em;
+                font-weight: normal;
+
+                transition: background-color .6s ease-out, padding .6s ease-out;
+                -o-transition: background-color .6s ease-out, padding .6s ease-out;
+                -moz-transition: background-color .6s ease-out, padding .6s ease-out;
+                -webkit-transition: background-color .6s ease-out, padding .6s ease-out;
+            }
+
+            nav#side-nav .sf-menu a:hover,
+            nav#side-nav .sf-menu a:focus,
+            nav#side-nav .sf-menu a:active {
+                background: transparent;
+                background: #f4f4f4;
+            }
+
+            /* Last Item Link */
+            nav#side-nav .sf-menu li.last a {
+                border-bottom: 0;
+            }
+
+
+            /* --> Side Navigation Flyout Menu -------------------------------*/
+
+            nav#side-nav .sf-menu ul {
+                left: 0;
+                width: 100%;
+                border: 1px solid #ccc;
+                position: relative;
+                display: inline-block;
+            }
+
+            /* Flyout Indicator (Arrow) */
+            nav#side-nav .sf-sub-indicator {
+                left: 95%;
+                top: 50%;
+                border: solid transparent;
+                content: " ";
+                height: 0;
+                width: 0;
+                position: absolute;
+                pointer-events: none;
+                border-color: transparent;
+                border-top-color:  #ccc;
+                border-left-color:transparent;
+                border-width: 5px;
+                margin-top: -5px;
+                display: block;
+                background: transparent;
+            }
+
+            /*------------------------------------------------------------------
+            --> BreadCrumbs / System Buttons
+            ------------------------------------------------------------------*/
+
+            /* --> Breadcrumbs ----------------------------------------------*/
+
+            /* Breadcrumb Span */
+            section#bcrumbs {
+                width: 100%;
+                padding: 0;
+            }
+
+            #crumbs,
+            #editor {
+                padding: 0;
+            }
+
+            /* Breadcrumb List */
+            ul.bcrumb-list {
+                display: inline-block;
+                list-style: none;
+                margin: 0;
+                font-size: 1.5em;
+            }
+
+            ul.bcrumb-list a{
+                color: #292929;
+                font-weight: normal;
+                font-size: inherit;
+            }
+
+            /* Breadcrumb Item */
+            ul.bcrumb-list li {
+                display: inline-block;
+                vertical-align: middle;
+                font-size: inherit;
+                margin-right: 10px;
+                font-weight: normal;
+                padding: 10px 0;
+            }
+
+            /* Breadcrumb Item Arrow & Current Item */
+            ul.bcrumb-list li.arr {
+                font-size: inherit;
+                cursor: default;
+                color: #a41e34;
+            }
+
+            ul.bcrumb-list li.current {
+                font-size: inherit;
+                cursor: default;
+            }
+
+
+            /* --> System Buttons ----------------------------------------------*/
+
+            /* Column that contains the system buttons */
+            .columns.system-btns-col { padding: 0; }
+
+            /* Email, Edit, Print List Container */
+            ul.system-btns-list {
+                float: left;
+                width: 100%;
+                list-style: none;
+                margin: 0;
+            }
+
+            /* System Button Item */
+            ul.system-btns-list > li {
+                float: left;
+                margin: 0 auto;
+                width: 50%;
+                margin-bottom: 15px;
+                padding: 0 10px;
+            }
+
+            /* System Button Link Text */
+            ul.system-btns-list li a.button {
+                font-size: 1.15em;
+                margin-bottom: 0;
+                text-align: left;
+            }
+
+            /* System Button Styles */
+            .button.system-button {
+                width: 100%;
+                color: #333;
+                margin:0;
+                background-color: #fff;
+                border: none;
+                padding: 10px 10px;
+                box-shadow: none;
+
+                transition: background-color .6s ease-out, box-shadow .6s ease-out;
+                -o-transition: background-color .6s ease-out, box-shadow .6s ease-out;
+                -moz-transition: background-color .6s ease-out, box-shadow .6s ease-out;
+                -webkit-transition: background-color .6s ease-out, box-shadow .6s ease-out;
+            }
+
+            .button.system-button:hover,
+            .button.system-button.hover {
+                background-color: #fff !important;
+                box-shadow: 0 0 8px #666;
+                color:#0f3da8;
+            }
+
+            /* System Button Dropdown Menu */
+            ul.system-menu {
+                list-style: none;
+                display: none;
+                position: absolute;
+                width: inherit;
+                background-color: #fff;
+                margin: 0;
+                padding: 5px;
+                right:0px;
+                border-radius: 6px;
+                box-shadow: 0 4px 6px #666;
+                z-index: 90;
+            }
+
+            /* Show dropdown menu on hover */
+            li:hover ul.system-menu {
+                display: block;
+            }
+
+            /* System Button Dropdown Menu Item Link */
+            ul.system-menu li a {
+                display: block;
+                font-weight: normal;
+                padding: 6px 0;
+                color: #333;
+                text-indent: 35px;
+                border: 1px solid transparent;
+            }
+
+            ul.system-menu li a:hover {
+                color: #a41e34;
+                text-decoration: none;
+                border-color: #ddd;
+                border-radius: 6px;
+            }
+
+            /* Email */
+            #btn-email {
+                background: #fff url('/img/00/icons/icon-email.png') no-repeat 5px 3px;
+                padding-left: 40px;
+            }
+
+            /* Edit */
+            #btn-edit {
+                background: #fff url('/img/00/icons/icon-edit.png') no-repeat 5px 4px;
+                padding-left: 40px;
+            }
+
+            /* Print */
+            #btn-print {
+                background: #fff url('/img/00/icons/icon-print.png') no-repeat 5px 3px;
+                padding-left: 40px;
+            }
+
+            /* Alter styles of system buttons that have a dropdown menu */
+            #btn-email:hover,
+            #btn-email.hover,
+            #btn-edit:hover,
+            #btn-edit.hover {
+                border-color: transparent;
+                border-bottom-left-radius: 0;
+                border-bottom-right-radius: 0;
+            }
+
+
+
+
+            /*------------------------------------------------------------------
+            --> HTML Content
+            ------------------------------------------------------------------*/
+
+            /* --> Page Title ----------------------------------------------*/
+
+            .pgtitle {
+                padding: 0;
+            }
+
+            h1.content-title {
+                font-size: 2.5em;
+                color: #fff;
+                padding: 25px;
+                margin: 0;
+                text-transform: uppercase;
+                cursor: default;
+                background-color: #a41e34;
+                background-image: url(/img/00/layout/header-title.jpg);
+                background-size: contain;
+                background-position: right;
+                background-repeat: no-repeat;
+            }
+
+
+            /* --> Page Content ----------------------------------------------*/
+
+            section#page-content {
+                margin-bottom: 50px;
+                background-color: #fff;
+                padding: 6px;
+                -webkit-box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.58);
+                -moz-box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.58);
+                box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.58);
+            }
+
+
+            /*------------------------------------------------------------------
+            --> Page Footer
+            ------------------------------------------------------------------*/
+
+            /* --> Footer Base -----------------------------------------------*/
+
+            footer#page-footer {
+                background-color: #fff;
+                color: #a41e34;
+                padding-bottom: 0;
+                text-align: center;
+                margin-top: -1em;
+            }
+
+            #footer-top {
+                width: 100%;
+                display: inline-block;
+                vertical-align: top;
+                padding-bottom: 2em;
+            }
+
+            #footer-bottom {
+                border-top: 1px solid #81221d;
+                width: 100%;
+                display: inline-block;
+                vertical-align: top;
+            }
+
+            h1.city-quote-title {
+                color: #81221d;
+                font-size: 2em;
+                font-style: italic;
+                font-weight: bold;
+                margin:0;
+                display: inline-block;
+                vertical-align: middle;
+            }
+
+            .footer-logo,
+            .city-quote {
+                display: inline-block;
+                vertical-align: middle;
+                width: 100%;
+                padding: 0 15px;
+                text-align: center;
+            }
+
+            /* --> Mayor Message -----------------------------------------*/
+
+            #page-footer-top {
+                width: 100%;
+                margin-top: 4em;
+                position: relative;
+                vertical-align: middle;
+                text-align: center;
+                background-color: #fff;
+            }
+
+            .page-footer-row {
+                background-image: url(/img/00/layout/footer-bees.png);
+                background-repeat: no-repeat;
+                background-position: bottom right;
+                background-size: inherit;
+                padding: 3em 0 6em 0;
+            }
+
+            #footer-message .mm-button-txt {
+                display: inline-block;
+                width: 100%;
+                color: #a41e34;
+                font-size: 2.5em;
+                margin-bottom: 10px;
+                font-style: italic;
+                font-weight: 100;
+                text-align:center;
+            }
+
+            #footer-message .mm-button-subtxt {
+                color: #a41e34;
+                font-size: 1.4em;
+                padding: 25px;
+                background: rgba(255,255,255,0.6);
+                border: 1px solid #d5d5d5;
+                border-radius: 30px;
+                width: 100%;
+                display: inline-block;
+                position: relative;
+                line-height: 21px;
+            }
+
+            #footer-message .mm-button-subtxt:before {
+                content: "";
+                position: absolute;
+                width: 12px;
+                left: -12px;
+                height: 35px;
+                background: url(/img/00/layout/quotemessage.png);
+                bottom: 23px;
+                z-index: 5555;
+            }
+
+
+            #footer-message .mm-button-img {
+                vertical-align: bottom;
+                border-radius: 50%;
+                width: 110px;
+                margin-right: 20px;
+            }
+
+            #footer-message .mm-button-txt-wrap {
+                display: inline-block;
+                width: 45%;
+                text-align: left;
+                vertical-align: middle;
+            }
+
+            /* --> Footer Navigation -----------------------------------------*/
+
+            /* Navigation list */
+            nav.foot-nav ul.foot-nav-list {
+                list-style: none;
+                margin-top: 20px;
+            }
+
+            nav.foot-nav ul li:first-child {
+                margin-left: 0;
+            }
+
+            /* Navigation list item */
+            nav.foot-nav ul li {
+                margin-bottom: 3px;
+                display: inline-block;
+                vertical-align: middle;
+                margin-left: 5%;
+            }
+
+            /* Navigation list item link */
+            nav.foot-nav ul.foot-nav-list li a {
+                font-size: 1.6em;
+                text-transform: uppercase;
+            }
+
+            .address,
+            .extralinks {
+                display: inline-block;
+                vertical-align: middle;
+                width: 100%;
+                text-align: center;
+            }
+
+            .footer-address p {
+                font-size: 1.2em;
+                margin: 0;
+                color: #2a2a2a;
+            }
+
+            /* Navigation list */
+            .extralinks ul.foot-nav-list {
+                list-style: none;
+                margin-top: 15px;
+            }
+
+            .extralinks ul li:first-child {
+                margin-left: 0;
+            }
+
+            /* Navigation list item */
+            .extralinks ul li {
+                margin-bottom: 3px;
+                display: inline-block;
+                vertical-align: middle;
+                margin-left:5%;
+            }
+
+            /* Navigation list item link */
+            .extralinks ul.foot-nav-list li a {
+                font-size: 1.2em;
+                color: #2a2a2a;
+                font-weight: normal;
+            }
+
+            #dynamic-social-btns .mm-button-wrap {
+                display: inline-block;
+                width: 29px;
+                margin-left: 1%;
+                position: relative;
+                vertical-align: middle;
+                margin-top: 20px;
+            }
+
+
+        </style>
+    </template>
+</dom-module>

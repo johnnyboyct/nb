@@ -1,0 +1,14 @@
+bower_components
+dist
+node_modules
+build
+.idea
+firebase-debug.log
+
+# Uncomment the next two lines in production applications
+#internal
+#functions
+
+# Notification test data
+notification-key.txt
+notification-user.txt

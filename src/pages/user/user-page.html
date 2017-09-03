@@ -1,0 +1,351 @@
+<link rel="import" href="../../../bower_components/paper-material/paper-material.html">
+<link rel="import" href="../../../bower_components/app-route/app-route.html">
+<link rel="import" href="../../../bower_components/iron-image/iron-image.html">
+<link rel="import" href="../../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../../bower_components/from-now/from-now.html">
+<link rel="import" href="../../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../../bower_components/paper-toggle-button/paper-toggle-button.html">
+<link rel="import" href="../../header.html">
+<link rel="import" href="../../components/user-chat.html">
+<dom-module id="user-page">
+<template>
+  <style include="app-styles">
+    :host {
+      display: block;
+    }
+    .font-subhead {
+      margin-top: 24px;
+    }
+    iron-icon {
+      color: green;
+    }
+    .default-banner > div {
+      margin: 0 6px;
+    }
+    .warning-banner {
+      max-width: 150px;
+      @apply --font-small;
+    }
+    .divider {
+      margin: 8px inherit;
+    }
+  </style>
+
+  <app-route
+    route="[[route]]"
+    pattern="/:user"
+    data="{{routeData}}"
+    tail="{{subroute}}">
+  </app-route>
+
+  <paper-material class="layout vertical">
+    <span class="font-headline self-center">[[routeData.user]]'s Profile</span>
+
+
+    <div class="font-subhead">
+      <span>Display Name</span>
+      <a
+        hidden$="[[!isMe]]"
+        href="javascript:"
+        class="font-tiny"
+        on-tap="toggleEditName"
+      >[[_toggleString(editName, 'cancel', 'change')]]</a>
+    </div>
+    <div hidden$="[[editName]]">[[profile.name]]</div>
+    <div hidden$="[[!editName]]" class="layout horizontal center">
+      <paper-input id="nameInput" value="[[profile.name]]" no-label-float></paper-input>
+      <paper-button class="secondary-button small" on-tap="updateName">Change</paper-button>
+    </div>
+
+
+    <div class="font-subhead">
+      <span>Image</span>
+      <a
+        hidden$="[[!isMe]]"
+        href="javascript:"
+        class="font-tiny"
+        on-tap="toggleEditPic"
+      >[[_toggleString(editPic, 'cancel', 'change')]]</a>
+    </div>
+    <div hidden$="[[editPic]]">
+      <iron-image alt="photo" class="avatar" src="[[profile.pic]]" preload></iron-image>
+    </div>
+    <div hidden$="[[!editPic]]" class="layout horizontal center">
+      <paper-input id="picInput" class="flex" value="[[profile.pic]]" no-label-float></paper-input>
+      <paper-button class="secondary-button small" on-tap="updatePic">Change</paper-button>
+    </div>
+
+    <div hidden$="[[!auth]]">
+      <div hidden$="[[isMe]]" class="layout horizontal center end-justified">
+        <div hidden$="[[!sendingMsg]]" class="layout horizontal center">
+          <paper-input id="msgInput" value="[[msg]]" no-label-float></paper-input>
+          <paper-button class="secondary-button small" on-tap="sendMsg">Send</paper-button>
+        </div>
+        <a href="javascript:"
+          class="font-default"
+          on-tap="toggleSendingMsg"
+        >[[_toggleString(sendingMsg, 'cancel', 'Send message')]]</a>
+      </div>
+    </div>
+
+  </paper-material>
+
+  <paper-material hidden$="[[!isMe]]" class="layout vertical">
+    <span class="font-title self-center">Private Info</span>
+    <div class="font-subhead">Login methods</div>
+    <div class="layout horizontal center justified wrap" hidden$="[[!_canAddProvider(_providers)]]">
+      <span>[[_join(_providers, '\, ')]]</span>
+      <span hidden$="[[!_hasUsernameProviderOnly(_providers)]]" class="warning-banner">
+        Add a second login method to access your account if you forget the password.
+      </span>
+      <div class="default-banner font-small layout horizontal center">
+        <span class="font-default2">+</span>
+        <div class="layout vertical center"
+          hidden$="[[_includes(_providers, 'Google')]]"
+          on-tap="_linkGoogle">
+          <iron-image alt="google" src="/images/google-icon.svg" preload></iron-image>
+          Google
+        </div>
+        <div class="layout vertical center"
+          hidden$="[[_includes(_providers, 'Facebook')]]"
+          on-tap="_linkFacebook">
+          <iron-image alt="facebook" src="/images/facebook-icon.svg" preload></iron-image>
+          Facebook
+        </div>
+        <div class="layout vertical center"
+          hidden$="[[_includes(_providers, 'Twitter')]]"
+          on-tap="_linkTwitter">
+          <iron-image alt="twitter" src="/images/twitter-icon.svg" preload></iron-image>
+          Twitter
+        </div>
+        <div class="layout vertical center"
+          hidden$="[[_includes(_providers, 'Github')]]"
+          on-tap="_linkGithub">
+          <iron-image alt="github" src="/images/github-icon.svg" preload></iron-image>
+          Github
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+    <div class="layout horizontal center justified">
+      <div class="font-default2">Created</div>
+      <div class="font-default2">Last Activity</div>
+    </div>
+    <div class="layout horizontal center justified">
+      <from-now time="[[auth.user.created]]"></from-now>
+      <from-now time="[[auth.user.lastActivity]]"></from-now>
+    </div>
+
+    <div class="font-subhead">Settings</div>
+    <div class="layout horizontal center justified">
+      <div>Message notifications</div>
+      <paper-toggle-button
+        checked="[[auth.user.messageNotifications]]"
+        on-change="_messageNotificationsChanged"></paper-toggle-button>
+    </div>
+    <div class="layout horizontal center justified">
+      <div>Use metric</div>
+      <paper-toggle-button
+        checked="[[auth.user.useMetric]]"
+        on-change="_useMetricChanged"></paper-toggle-button>
+    </div>
+    <div class="divider"></div>
+
+    <div hidden$="[[!_hasPrivileges(auth.user.role)]]">
+      <div class="layout horizontal center justified">
+        <div class="font-default2">Role</div>
+        <div class="font-default2">Privileges</div>
+      </div>
+      <div class="layout horizontal center justified">
+        <div>[[auth.user.role]]</div>
+        <a href="javascript:" on-tap="toggleElevated"
+          >[[_toggleString(auth.user.isElevated, 'De-elevate', 'Elevate')]]</a>
+      </div>
+    </div>
+  </paper-material>
+</template>
+<script>
+Polymer({
+  is: 'user-page',
+  properties: {
+    auth: Object,
+    route: Object,
+    isMe: {
+      type: Boolean,
+      value: false
+    },
+    editName: {
+      type: Boolean,
+      value: false
+    },
+    editPic: {
+      type: Boolean,
+      value: false
+    },
+    sendingMsg: {
+      type: Boolean,
+      value: false
+    },
+  },
+  observers: [
+    '_loadProfile(auth, routeData.user)',
+    '_processProviders(auth.user.providers)'
+  ],
+
+  _loadProfile: function(auth, user) {
+    if (auth && auth.uid == user) {
+      LOG && AUTH && log.v('Using auth.profile');
+      this.profile = auth.profile;
+      this.isMe = true;
+    } else {
+      db.watch('/profiles/' + user, function(profile) {
+        LOG && AUTH && log.v("Using " + user + "'s profile'");
+        this.isMe = false;
+        this.profile = profile;
+      }.bind(this));
+    }
+  },
+
+  _hasPrivileges: function(role) {
+    return isModerator(role);
+  },
+
+  toggleEditName: function() {
+    this.editName = !this.editName;
+    if (this.editName) {
+      this.$.nameInput.focus();
+      this.$.nameInput.$.input.select();
+    }
+  },
+  toggleEditPic: function() {
+    this.editPic = !this.editPic;
+    if (this.editPic) {
+      this.$.picInput.focus();
+      this.$.picInput.$.input.select();
+    }
+  },
+  toggleElevated: function() {
+    db.users.setElevated(this.auth.uid, !this.auth.user.isElevated, null, showServerErrorToast);
+  },
+
+
+  updateName: function() {
+    var name = this.$.nameInput.value;
+    if (name && name.length >= 1 && name.length <= 16) {
+      db.users.changeDisplayName(this.auth.uid, name, function() {
+        this.editName = false;
+      }.bind(this), showServerErrorToast);
+    }
+  },
+  updatePic: function() {
+    var pic = this.$.picInput.value;
+    if (pic && pic.length >= 10 && pic.length <= 250) {
+      db.users.changeAvatar(this.auth.uid, pic, function() {
+        this.editPic = false;
+      }.bind(this), showServerErrorToast);
+    }
+  },
+
+  toggleSendingMsg: function() {
+    this.sendingMsg = !this.sendingMsg;
+    if (this.sendingMsg) {
+      this.$.msgInput.focus();
+    }
+  },
+
+  sendMsg: function() {
+    var msg = this.$.msgInput.value;
+    if (msg && msg.length >= 1 && msg.length <= 2000) {
+      var user = this.auth.uid;
+      var otherUser = this.routeData.user;
+      var chat = this.auth.user.messages && this.auth.user.messages[otherUser];
+      db.users.sendMessage(user, [otherUser], chat, msg, function() {
+        showSuccessToast('Message sent');
+        this.$.msgInput.value = '';
+        this.sendingMsg = false;
+      }.bind(this), showServerErrorToast);
+    }
+  },
+
+  _toggleString: function(condition, ifTrue, ifFalse) {
+    return condition ? ifTrue : ifFalse;
+  },
+  _isEmpty: function(any) {
+    return isEmpty(any);
+  },
+
+  _processProviders: function(providers) {
+    var array = [];
+    for (var key in providers) {
+      array.push(key);
+    }
+    this._providers = array;
+  },
+
+  _join: function(array, separator) {
+    return array.join(separator);
+  },
+
+  _includes: function(array, value) {
+    return array.includes(value);
+  },
+
+  _linkGoogle:   function() { this._linkProvider('google') },
+  _linkFacebook: function() { this._linkProvider('facebook') },
+  _linkTwitter:  function() { this._linkProvider('twitter') },
+  _linkGithub:   function() { this._linkProvider('github') },
+  _linkProvider: function(name) {
+    document.getElementById('app').$['firebase'].$['auth'].linkProvider(name, function() {
+      db.users.addProvider(this.auth.uid, ucFirst(name), function() {
+        //success
+      }, showServerErrorToast);
+    }.bind(this), function(error) {
+      // LOG && log.w('Error linking provider', error);
+      switch (error.code) {
+        case 'auth/credential-already-in-use':
+          showErrorToast('That account is already linked to another user.');
+          break;
+        case 'auth/email-already-in-use':
+          showErrorToast('A user with that email already exists.');
+          break;
+        case 'auth/popup-blocked':
+          showWarningToast('Login popup was blocked.');
+          break;
+        case 'auth/cancelled-popup-request':
+          // blank
+          break;
+        case 'auth/popup-closed-by-user':
+          // blank
+          break;
+      }
+    }.bind(this), showServerErrorToast);
+  },
+
+  _hasUsernameProviderOnly: function(providers) {
+    return providers && providers.length == 1 && providers[0] == 'Username';
+  },
+  _canAddProvider: function(providers) {
+    if (!providers) return true;
+    var hasUsername = providers[0] == 'Username';
+    return (hasUsername && providers.length < 5)
+        || (!hasUsername && providers.length < 4);
+  },
+  _messageNotificationsChanged: function(e) {
+    // LOG && log.v('_messageNotificationsChanged', arguments);
+    var enabled = e.target.checked;
+    if (this.auth && this.auth.user.messageNotifications != enabled) {
+      db.users.setMessageNotifications(this.auth.uid, enabled);
+    }
+  },
+  _useMetricChanged: function(e) {
+    // LOG && log.v('_messageNotificationsChanged', arguments);
+    var enabled = e.target.checked;
+    if (this.auth && this.auth.user.useMetric != enabled) {
+      db.users.setUseMetric(this.auth.uid, enabled);
+    }
+  }
+});
+</script>
+</dom-module>

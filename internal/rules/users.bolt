@@ -1,0 +1,50 @@
+//
+// users.bolt
+//
+
+path /users {
+  read() { amAdmin() }
+  /{user} is User {
+    // NOTE chats allow many to many messaging,
+    // but only 1 to 1 messaging is used in the app.
+    // `messages` here is used to lookup the chat id when
+    // sending a message to another user.
+    path /chats/{chat} is ChatLastMessage;
+    path /messages/{otherUser} {
+      write() { this != null && isInChat($otherUser, this) && amInChat(this) }
+    }
+  }
+}
+
+type User {
+  providers: Map<Provider, Boolean>
+  created: FinalNow
+  lastActivity: CurrentTimestamp
+  role: UserRole
+  isElevated: Boolean
+  useMetric: Boolean | Null
+  messagingTokens: Map<FirebaseMessagingToken, Boolean>
+  messageNotifications: Boolean | Null
+  read() { key() == me() }
+  write() { key() == me() && this != null }
+}
+
+type Provider extends String {
+  validate() { this.test(/^(Username|Google|Facebook|Twitter|Github)$/) }
+}
+
+type UserRole extends String {
+  write() { true }
+  validate() { root.roles[$user] == this || (root.roles[$user] == null && this == 'User') }
+}
+
+type ChatLastMessage {
+  author: String
+  text: MessageText
+  created: CurrentTimestamp
+  write() { this != null && isInChat($user, $chat) && amInChat($chat) }
+  validate() { isInChat(this.author, $chat) }
+}
+
+isElevated(user) { root.users[user].isElevated }
+amElevated() { isElevated(me()) }

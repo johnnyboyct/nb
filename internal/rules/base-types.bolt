@@ -1,0 +1,64 @@
+//
+// base-types.bolt
+//
+
+// Final types
+type Final {
+  validate() { isUnchanged(this) }
+}
+type FinalString extends String {
+  validate() { isUnchanged(this) }
+}
+type FinalBoolean extends Boolean {
+  validate() { isUnchanged(this) }
+}
+type FinalNumber extends Number {
+  validate() { isUnchanged(this) }
+}
+type FinalNow {
+  validate() { isUnchangedDefault(this, now) }
+}
+type FinalTimestamp extends Timestamp {
+  validate() { isUnchanged(this) }
+}
+type FinalAuth {
+  validate() { isUnchangedDefault(this, me()) }
+}
+type FinalUser {
+  validate() { isUnchanged(this) && userExists(this) }
+}
+
+// Timestamp types
+type CurrentTimestamp {
+  validate() { this == now }
+}
+type Timestamp extends Number {
+  validate() { this >= 0 && this <= now }
+}
+
+// Readable types
+type Readable<T> extends T {
+  read() { amAuthed() }
+}
+
+type RecordedAction {
+  user: FinalAuth
+  created: FinalNow
+}
+
+type FirebaseKey extends String {
+  // validate() { this.test(/^[a-zA-Z0-9_-]{20}$/) } // Strict
+  validate() { this.test(/^[a-zA-Z0-9_-]{16,32}$/) }
+}
+type FirebaseUid extends String {
+  // validate() { this.test(/^[a-zA-Z0-9_-]{28}$/) } // Strict
+  validate() { this.test(/^[a-zA-Z0-9_-]{16,64}$/) }
+}
+type FirebaseMessagingToken extends String {
+  // validate() { this.test(/^[a-zA-Z0-9_-]{11}:[a-zA-Z0-9_-]{140}$/) } // Strict
+  validate() { this.test(/^[:a-zA-Z0-9_-]{64,256}$/) }
+}
+
+amAuthed() { auth.uid != null }
+isUnchanged(value) { prior(value) == null || value == prior(value) }
+isUnchangedDefault(value, default) { value == (prior(value) == null ? default : prior(value)) }

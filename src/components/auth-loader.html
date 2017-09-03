@@ -1,0 +1,179 @@
+<link rel="import" href="../header.html">
+
+<!--
+  auth-loader loads user data from the database after a user is authenticated.
+  It will be loaded into the variable `auth` with at least these children:
+  * `auth.user` the user's private information
+  * `auth.profile` the user's public profile
+  * `auth.uid` the user's unique username. For the Firebase uid, use firebaseUser.uid
+-->
+<dom-module id="auth-loader">
+  <script>
+  Polymer({
+    is: 'auth-loader',
+    properties: {
+      /**
+       * The Firebase app.
+       */
+      app: Object,
+      /**
+       * The &lt;firebase-auth&gt; user object.
+       */
+      firebaseUser: Object,
+      /**
+       * When authenticated this contains all of the loaded user data.
+       */
+      auth: {
+        type: Object,
+        value: null,
+        notify: true
+      },
+      /**
+       * For specifying a username with capitalization when a user
+       * is first created using the email/username login method.
+       */
+      username: String
+    },
+
+    observers: [
+      '_userAuthenticated(app, firebaseUser)',
+      '_userDataLoaded(app, firebaseUser, username, user, profile)',
+    ],
+
+    _userAuthenticated: function(app, firebaseUser) {
+      if (app && firebaseUser) {
+        // If we are here the user has authenticated with either
+        // a provider or the email/username login.
+        // They may or may not have user data in the database.
+
+        // The approach here is to
+        // 1. Check if they have user data and load it.
+        // 2. If no user data exists in the database:
+        //   a. Username login: Create user data from `this.username`
+        //      which is passed in as the desired username with capitalization.
+        //   b. Provider login: Prompt for a username and then create
+        //      user data using that username.
+        LOG && AUTH && log.v('Authenticated:', firebaseUser);
+        db.watch('/uids/' + firebaseUser.uid, function(username) {
+          LOG && log.v(firebaseUser.uid, 'is', username);
+          if (username) {
+            // User exists!
+            this.username = username;
+            this._watchUserData(username);
+          } else {
+            // No user data in the database.
+            if (firebaseUser.providerData[0].providerId == 'password') {
+              // Authenticated using email/username.
+
+              if (!this.username) {
+                // If authenticated but no username was passed,
+                // parse the username from the email, which results in the
+                // user being created with all lowercase letters.
+                var email = firebaseUser.email || firebaseUser.providerData[0].email;
+                this.username = email.split('@', 1)[0];
+              }
+
+              this.createUser(firebaseUser, this.username);
+
+            } else {
+              // Authenticated using a provider.
+              LOG && log.d('Showing set-username dialog...');
+              showSetUsernameDialog(firebaseUser.uid,
+                this._getProvider(firebaseUser.providerData[0].providerId),
+                function(username) {
+                  this.username = username;
+                  this.createUser(firebaseUser, username);
+                }.bind(this));
+            }
+          }
+        }.bind(this));
+      } else {
+        // User is not authenticated.
+        if (this.auth) {
+          // Handle logout.
+          this._unwatchUserData(this.username);
+          this.username = null;
+          this.user = null;
+          this.profile = null;
+          this.auth = null;
+        }
+      }
+    },
+
+    _userDataLoaded: function(app, firebaseUser, username, user, profile) {
+      if (app && firebaseUser && username && !isEmpty(user) && !isEmpty(profile)) {
+        var tmp = {};
+        tmp.uid = username;
+        tmp.user = user;
+        tmp.profile = profile;
+        if (!this.auth) {
+          LOG && log.d('Authenticated user loaded: ', tmp);
+        }
+        // This purpose of this element has been fulfilled.
+        this.auth = tmp;
+      }
+    },
+
+    createUser: function(firebaseUser, username) {
+      LOG && AUTH && log.v(firebaseUser, username);
+      var user = {};
+      var profile = {};
+      var data = firebaseUser.providerData[0];
+      user.providers = {};
+      user.providers[this._getProvider(data.providerId)] = true;
+      user.created = db.timestamp();
+      user.lastActivity = db.timestamp();
+      user.role = 'User';
+      user.isElevated = false;
+      //  user.email = firebaseUser.email || data.email;
+      //  user.emailVerified = firebaseUser.emailVerified || (user.email && user.provider != 'Email');
+
+      profile.pic = firebaseUser.photoURL || data.photoURL || '/images/unknown-user.jpg';
+      profile.name = firebaseUser.displayName || data.displayName || username;
+
+      if (profile.pic.length > 250) {
+        profile.pic = '/images/unknown-user.jpg';
+      }
+      if (profile.name.length > 16) {
+        profile.name = username;
+      }
+
+      db.users.createUser(firebaseUser.uid, username, user, profile, function() {
+        showInfoToast('Welcome!');
+        goBack();
+      }, showServerErrorToast);
+    },
+
+    _getProvider: function(provider) {
+      switch (provider) {
+        case 'password':
+          return 'Username';
+        case 'google.com':
+          return 'Google';
+        case 'twitter.com':
+          return 'Twitter';
+        case 'facebook.com':
+          return 'Facebook';
+        case 'github.com':
+          return 'Github';
+        default:
+          return provider || '';
+      }
+    },
+
+    _watchUserData: function(username) {
+      db.watch('/users/' + username, function(user) {
+        this.user = user;
+      }.bind(this));
+      db.watch('/profiles/' + username, function(profile) {
+        this.profile = profile;
+      }.bind(this));
+    },
+
+    _unwatchUserData: function(username) {
+      db.unwatch('/users/' + username);
+      db.unwatch('/profiles/' + username);
+    }
+  });
+  </script>
+</dom-module>

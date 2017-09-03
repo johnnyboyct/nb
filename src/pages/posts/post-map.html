@@ -1,0 +1,119 @@
+<link rel="import" href="../../../bower_components/google-map/google-map.html">
+<link rel="import" href="../../../bower_components/google-map/google-map-marker.html">
+<link rel="import" href="../../../bower_components/iron-image/iron-image.html">
+<link rel="import" href="../../header.html">
+
+<dom-module id="post-map">
+<template>
+  <style include="app-styles">
+    :host {
+      display: block;
+    }
+    google-map {
+      height: calc(100vh - 214px);
+      max-height: 600px;
+    }
+  </style>
+    <google-map
+      latitude="[[_filterLat(lat)]]"
+      longitude="[[_filterLng(lng)]]"
+      api-key="AIzaSyAUPOaJubJnaRTPUd_xX8MOA62gRtSlfCc"
+      disable-street-view-control
+      map="{{map}}"
+      on-google-map-ready="_mapLoaded"
+      zoom="[[_radiusToZoom(radiusKm, 'true')]]">
+      <template is="dom-repeat" items="[[posts]]" as="post">
+        <google-map-marker
+          latitude="[[post.lat]]"
+          longitude="[[post.lng]]"
+          title="[[_getTitle(post)]]"
+          click-events
+          icon="[[_getIcon(post)]]"
+          on-google-map-marker-click="_toggleInfoWindow"
+          on-google-map-marker-close="_infoWindowClosed"
+          map="[[map]]"></google-map-marker>
+      </template>
+    </google-map>
+</template>
+<script>
+Polymer({
+  is: 'post-map',
+  properties: {
+    auth: Object,
+    posts: Array,
+    lat: {
+      type: Number,
+      value: 41.651
+    },
+    lng: {
+      type: Number,
+      value: -83.542
+    },
+    radiusKm: {
+      type: Number,
+      value: 0
+    }
+  },
+  _filterLat: function(lat) {
+    return lat ? lat : 41.651;
+  },
+  _filterLng: function(lng) {
+    return lng ? lng : -83.542;
+  },
+  /**
+   * Convert miles to a google map's zoom, based on a zoom of 14 ~= 1 mile.
+   */
+  _radiusToZoom: function(radius, metric) {
+    if (radius == 0) return 1;
+    if (metric) radius = kmToMiles(radius);
+    var zoom = Math.round(14 - Math.log(radius) / Math.LN2);
+    // console.log('zoom', zoom);
+    return zoom < 1 ? 1 : zoom;
+  },
+  _toggleInfoWindow: function(e) {
+    var marker = e.target.marker;
+    var post = e.model.post;
+    this.infoWindows = this.infoWindows || {};
+    var info = this.infoWindows[post.$key];
+    if (info) {
+      info.close();
+      this.infoWindows[post.$key] = null;
+    } else {
+      var contentString = '';
+      if (post.type == 'user') {
+        contentString = '<img style="height:24px; width:24px" alt="photo" src="'+post.pic+'"/>'
+          + '<div style="font-weight: bold;"><a href="/user/'+post.$key+'">'+post.$key+'</a></div>'
+          + '<div>'+round(post.distance, 1)+' '+post.distanceUnit+' away</div>'
+          + '</div>';
+      } else {
+        contentString = '<div style="font-weight: bold;"><a href="/post/'+post.$key+'">'+post.title+'</a></div>'
+          + '<div>'+post.author+'</div>'
+          + '<div>'+round(post.distance, 1)+' '+post.distanceUnit+' away</div>'
+          + '</div>';
+      }
+      info = new google.maps.InfoWindow({
+          content: contentString
+      });
+      info.open(this.map, marker);
+      this.infoWindows[post.$key] = info;
+    }
+  },
+  _infoWindowClosed: function(e) {
+    console.log('closed info window');
+    var post = e.model.post;
+    if (!post) return;
+    this.infoWindows = this.infoWindows || {};
+    this.infoWindows[post.$key] = null;
+  },
+  _mapLoaded: function() {
+    LOG && log.d('Google maps api has loaded');
+  },
+  _getTitle: function(post) {
+    return post.type == 'user' ? post.name : post.title;
+  },
+  _getIcon: function(post) {
+    return post.type == 'user' ? '/images/map-marker.png' : '/images/map-marker-blue.png'
+  }
+});
+</script>
+</dom-module>

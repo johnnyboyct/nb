@@ -1,0 +1,81 @@
+<link rel="import" href="../../header.html">
+<link rel="import" href="../../components/user-chat.html">
+<link rel="import" href="../../../bower_components/from-now/from-now.html">
+<dom-module id="chat-summary-toggle">
+  <template>
+    <style include="app-styles">
+      :host {
+        display: block;
+      }
+      .author {
+        display: inline-block;
+        min-width: 4em;
+      }
+    </style>
+
+    <div on-tap="_toggleOpened" class="layout horizontal center justified">
+      <span class="font-subhead">[[user]]</span>
+      <from-now class="font-small text-secondary" time="[[lastMsg.created]]"></from-now>
+    </div>
+    <div hidden$="[[opened]]" on-tap="_toggleOpened">
+      <span class="author">[[lastMsg.author]]:</span>
+      <span class="font-small">[[lastMsg.text]]</span>
+    </div>
+    <template is="dom-if" if="[[opened]]">
+      <div hidden$="[[!opened]]">
+        <user-chat auth="[[auth]]" chat="[[chat]]" user="[[user]]"></user-chat>
+      </div>
+    </template>
+
+
+<!--
+
+    <toggle-area value$="{{opened}}">
+      <div slot="trigger">
+
+      </div>
+      <div slot="true">
+
+      </div>
+      <div slot="false">
+
+      </div>
+    </toggle-area>
+    <iron-collapse-button opened$="{{opened}}">
+      <div slot="collapse-trigger" class="flex">
+        <last-message user="[[user]]" data="[[lastMsg]]"></last-message>
+      </div>
+      <div slot="collapse-content">
+
+      </div>
+    </iron-collapse-button> -->
+  </template>
+
+  <script>
+    Polymer({
+      is: 'chat-summary-toggle',
+      properties: {
+        auth: Object,
+        user: String,
+        lastMsg: Object,
+        chat: String,
+        opened: {
+          type: Boolean,
+          value: false,
+          reflectToAttribute: true
+        }
+      },
+      _toggleOpened: function() {
+        this.opened = !this.opened;
+      },
+      _openedChanged: function(opened) {
+        fire(this, 'open-changed', opened);
+      }
+      /**
+       * When the opened state of this toggle changes
+       * @event open-changed
+       * @param {opened} boolean Whether the toggle is true.
+       */
+    });
+  </script>
+</dom-module>

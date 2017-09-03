@@ -1,0 +1,36 @@
+//
+// roles.bolt
+//
+
+path /roles {
+  read() { amMaintainer() }
+  /{user} is Role;
+}
+
+type Role extends String {
+  read() { isMe(key()) || amModerator() }
+  write() {
+    (this == 'Root' && prior(!hasRoot()) && hasRoot())
+      || (this == 'Super Admin' && prior(amRoot()))
+      || (this == 'Admin' && prior(amSuperAdmin()))
+      || (this == 'Maintainer' && prior(amAdmin()))
+      || (this == 'Moderator' && prior(amMaintainer()))
+      || (this == null
+        && ((prior(this) == 'Super Admin' && prior(amRoot()))
+          || (prior(this) == 'Admin' && prior(amSuperAdmin()))
+          || (prior(this) == 'Maintainer' && prior(amAdmin()))
+          || (prior(this) == 'Moderator' && prior(amMaintainer()))))
+  }
+}
+
+isModerator(user) {  root.roles[user].test(/^(Moderator|Maintainer|Admin|Super Admin|Root)$/) }
+isMaintainer(user) { root.roles[user].test(/^(Maintainer|Admin|Super Admin|Root)$/) }
+isAdmin(user) {      root.roles[user].test(/^(Admin|Super Admin|Root)$/) }
+isSuperAdmin(user) { root.roles[user].test(/^(Super Admin|Root)$/) }
+isRoot(user) {       root.roles[user] == 'Root' }
+
+amModerator() {     isModerator(me())   && amElevated() }
+amMaintainer() {    isMaintainer(me())  && amElevated() }
+amAdmin() {         isAdmin(me())       && amElevated() }
+amSuperAdmin() {    isSuperAdmin(me())  && amElevated() }
+amRoot() {          isRoot(me())        && amElevated() }

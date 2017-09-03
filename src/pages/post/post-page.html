@@ -1,0 +1,97 @@
+<link rel="import" href="../../../bower_components/geo-location/geo-location.html">
+<link rel="import" href="../../../bower_components/app-route/app-route.html">
+<link rel="import" href="../../../bower_components/paper-material/paper-material.html">
+<link rel="import" href="../../../bower_components/from-now/from-now.html">
+<link rel="import" href="../../header.html">
+<link rel="import" href="../../geofire-import.html">
+
+
+<dom-module id="post-page">
+  <template>
+    <style include="app-styles">
+      :host {
+        display: block;
+      }
+      .font-subhead {
+        margin-top: 12px;
+      }
+    </style>
+
+
+  <!--TODO may prompt on page load-->
+    <geo-location latitude="{{userLat}}" longitude="{{userLng}}"></geo-location>
+
+    <app-route
+      route="[[route]]"
+      pattern="/:pid"
+      data="{{routeData}}">
+    </app-route>
+
+    <paper-material class="layout vertical">
+      <div class="font-title">[[post.title]]</div>
+      <div class="text-secondary layout horizontal center justified">
+        <from-now time="[[post.created]]"></from-now>
+        <div>[[post.location]]
+          <span hidden$="[[!distance]]">([[distance]] [[unit]])</span>
+        </div>
+      </div>
+      <div class="font-subhead">Tags</div>
+      <div>[[_getTags(post.tags)]]</div>
+      <div class="font-subhead">Body</div>
+      <div>[[post.body]]</div>
+      <div class="font-subhead">Author</div>
+      <div><a href$="/user/[[post.author]]">[[post.author]]</a></div>
+    </paper-material>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'post-page',
+      properties: {
+        auth: Object,
+        route: Object,
+        distance: {
+          type: Number,
+          value: 0
+        }
+      },
+      observers: [
+        '_pidChanged(routeData.pid)',
+        '_calcDistance(_lat, _lng, userLat, userLng, auth)'
+      ],
+
+      _pidChanged: function(pid) {
+        if (pid) {
+          db.read('/posts/' + pid, function(post) {
+            // LOG && log.v('loaded post', post);
+            this.post = post;
+          }.bind(this));
+          db.read('/geoPosts/' + pid + '/l', function(coords) {
+            // LOG && log.v('loaded coords', coords);
+            if (isArray(coords) && coords.length == 2) {
+              this._lat = coords[0];
+              this._lng = coords[1];
+            }
+          }.bind(this));
+        }
+      },
+      _calcDistance: function(lat, lng, userLat, userLng, auth) {
+        // LOG && log.v('_calcDistance', arguments);
+        if (lat && lng && userLat && userLng) {
+          var dist = GeoFire.distance([lat, lng], [userLat, userLng]);
+          if (!auth || !auth.user.useMetric) {
+            this.distance = round(kmToMiles(dist), 1);
+            this.unit = 'mi';
+          } else {
+            this.distance = round(dist, 1);
+            this.unit = 'km';
+          }
+        }
+      },
+      _getTags: function(tags) {
+        if (tags) return Object.keys(tags).join(', ');
+      }
+    });
+  </script>
+</dom-module>

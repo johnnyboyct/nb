@@ -1,0 +1,144 @@
+<link rel="import" href="../../header.html">
+<link rel="import" href="../../../bower_components/paper-material/paper-material.html">
+<link rel="import" href="../../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../../bower_components/paper-input/paper-input.html">
+
+<dom-module id="test-page">
+<template>
+  <style include="app-styles">
+    :host {
+      display: block;
+    }
+    .colors > div {
+      padding: 8px 16px;
+    }
+    .toast {
+      @apply --font-default2;
+    }
+  </style>
+
+
+
+    <!-- start: Header -->
+<nb-incentives></nb-incentives>
+
+
+  <paper-material>
+    <div class="font-title align-center">Colors</div>
+    <div class="colors layout horizontal justified">
+      <div class="bgcolor-primary">primary</div>
+      <div class="bgcolor-primary-dark">primary-dark</div>
+      <div class="bgcolor-primary-light">primary-light</div>
+    </div>
+    <div class="colors layout horizontal justified">
+      <div class="bgcolor-accent">accent</div>
+      <div class="bgcolor-accent-dark">accent-dark</div>
+      <div class="bgcolor-accent-light">accent-light</div>
+    </div>
+    <div class="colors layout horizontal justified">
+      <div class="color-success bgcolor-success">Success</div>
+      <div class="color-info bgcolor-info">Info</div>
+      <div class="color-warning bgcolor-warning">Warning</div>
+      <div class="color-error bgcolor-error">Error</div>
+    </div>
+    <div class="colors toast layout horizontal justified">
+      <div class="color-success bgcolor-success">Success</div>
+      <div class="color-info bgcolor-info">Info</div>
+      <div class="color-warning bgcolor-warning">Warning</div>
+      <div class="color-error bgcolor-error">Error</div>
+    </div>
+    <div class="colors layout horizontal justified">
+      <div class="text-primary">text-primary</div>
+      <div class="text-secondary">text-secondary</div>
+      <div class="text-disabled">text-disabled</div>
+      <div class="text-light" style="background-color:#000;">text-light</div>
+    </div>
+  </paper-material>
+  <paper-material>
+    <div class="font-title align-center">Buttons &amp; Toasts</div>
+    <div class="layout horizontal center center-justified">
+      <paper-button raised class="primary-button" on-tap="_showSuccessToast">Success</paper-button>
+      <paper-button class="secondary-button" on-tap="_showInfoToast">Info</paper-button>
+      <paper-button class="primary-button small" on-tap="_showWarningToast">Warning</paper-button>
+      <paper-button raised class="secondary-button small" on-tap="_showErrorToast">Error</paper-button>
+      <paper-button raised on-tap="_showDefaultToast">Default</paper-button>
+    </div>
+  </paper-material>
+  <paper-material>
+    <div class="font-title align-center">Notifications</div>
+    <div>
+      <paper-input label="Title" value="{{notification.title}}"></paper-input>
+      <paper-input label="Options" value="{{notification.options}}"></paper-input>
+      <paper-input label="Auto close (ms)" value="{{notification.autoClose}}"></paper-input>
+      <paper-button raised class="primary-button small" on-tap="_showNotification">Show Notification</paper-button>
+      <paper-button raised class="primary-button small" on-tap="_showNotificationDelayed">
+        Show Notification Delayed 5s</paper-button>
+      <paper-button raised class="primary-button small" on-tap="_showNotificationError">Notification Error</paper-button>
+    </div>
+  </paper-material>
+</template>
+<script>
+Polymer({
+  is: 'test-page',
+  properties: {
+    notification: {
+      type: Object,
+      value: {
+        title: 'title',
+        options: '{ "tag": "app", "body": "body", "icon": "/images/app-icon-32.png" }',
+        autoClose: 0
+      }
+    }
+  },
+
+  _showSuccessToast: function() {
+    showSuccessToast();
+  },
+  _showInfoToast: function() {
+    showInfoToast();
+  },
+  _showWarningToast: function() {
+    showWarningToast();
+  },
+  _showErrorToast: function() {
+    showErrorToast();
+  },
+  _showDefaultToast: function() {
+    showDefaultToast();
+  },
+
+  _showNotification: function() {
+    var n = showNotification(this.notification.title, JSON.parse(this.notification.options),
+      this.notification.autoClose, function(e, n) {
+        showInfoToast('Notification shown');
+        console.log(e, n);
+      },function(e, n) {
+        showInfoToast('Notification clicked');
+        console.log(e, n);
+      }, function(e, n) {
+        showInfoToast('Notification closed');
+        console.log(e, n);
+      }, function(e, n) {
+        showErrorToast('Notification error');
+        console.log(e, n);
+        // alert('Notification error');
+      }
+    );
+    if (n && this._autoFail) {
+      n.dispatchEvent(new Event('error'));
+      n.close();
+      this._autoFail = false;
+    }
+  },
+  _showNotificationDelayed: function() {
+    setTimeout(function() {
+      this._showNotification();
+    }.bind(this), 5000);
+  },
+  _showNotificationError: function() {
+    this._autoFail = true;
+    this._showNotification();
+  }
+});
+</script>
+</dom-module>

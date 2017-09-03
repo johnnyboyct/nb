@@ -1,0 +1,37 @@
+<link rel="import" href="../header.html">
+<link rel="import" href="../../bower_components/iron-image/iron-image.html">
+<dom-module id="app-logo">
+  <template>
+    <style include="app-styles">
+      :host {
+        display: block;
+      }
+      .super {
+        @apply --font-tiny;
+        vertical-align: super;
+      }
+      a {
+        color: inherit;
+        text-decoration: inherit;
+      }
+      iron-image {
+        --iron-image-height: 36px;
+        --iron-image-width: 36px;
+      }
+    </style>
+    <a href="/posts/list" class="layout horizontal center">
+      <!-- <iron-image alt="logo" src="/images/app-icon-transparent-240.png" preload></iron-image> -->
+      <span main-title>New Britain
+        <span class="super">CT</span>
+      </span>
+    </a>
+  </template>
+  <script>
+    Polymer({
+      is: 'app-logo',
+      properties: {
+
+      }
+    });
+  </script>
+</dom-module>

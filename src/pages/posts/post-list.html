@@ -1,0 +1,79 @@
+<link rel="import" href="../../../bower_components/paper-material/paper-material.html">
+<link rel="import" href="../../../bower_components/iron-list/iron-list.html">
+<link rel="import" href="../../../bower_components/iron-image/iron-image.html">
+<link rel="import" href="../../header.html">
+
+<dom-module id="post-list">
+  <template>
+
+    <style include="app-styles">
+      :host {
+        display: block;
+      }
+      iron-list {
+        min-height: 200px;
+      }
+      paper-material {
+        padding: 16px 16px 8px 16px;
+        margin: 6px 12px;
+        border-radius: 6px;
+      }
+      .heading {
+        padding: 0 16px;
+        margin: 12px 12px 0;
+        font-weight: bold;
+      }
+    </style>
+
+    <iron-list
+      id="list"
+      selection-enabled
+      scroll-target="document"
+      items="[[posts]]"
+      as="post">
+      <template>
+        <div>
+          <a plain href$="[[_getUrl(post)]]">
+            <paper-material class="layout horizontal center justified">
+              <template is="dom-if" if="[[_isUser(post)]]">
+                <iron-image alt="photo" class="avatar small" src="[[post.pic]]" preload></iron-image>
+                <span class="font-subhead">[[post.$key]]</span>
+              </template>
+              <template is="dom-if" if="[[!_isUser(post)]]">
+                <span class="font-subhead">[[post.title]]</span>
+                <span>[[post.author]]</span>
+              </template>
+              <div class="font-small">[[_round(post.distance)]] [[post.distanceUnit]]</div>
+            </paper-material>
+          </a>
+        </div>
+      </template>
+    </iron-list>
+  </template>
+
+  <script>
+  Polymer({
+    is: 'post-list',
+    properties: {
+      auth: Object,
+      posts: {
+        type: Array,
+        observer: 'notifyResize'
+      }
+    },
+    notifyResize: function() {
+      this.$.list.notifyResize();
+    },
+    _round: function(dist) {
+      return round(dist, 1)
+    },
+    _getUrl: function(post) {
+      return (post.type == 'post' ? '/post/' : '/user/') + post.$key;
+    },
+    _isUser: function(post) {
+      return post.type == 'user';
+    }
+  });
+  </script>
+
+</dom-module>
