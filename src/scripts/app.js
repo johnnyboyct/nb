@@ -37,7 +37,7 @@ function goBack() {
       }
     }
   }
-  redirect('/posts/list');
+  redirect('/test');
 }
 
 /*
