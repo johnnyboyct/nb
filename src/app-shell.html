@@ -24,26 +24,6 @@
 <link rel="import" href="../bower_components/screen-env/screen-env.html">
 <link rel="import" href="../bower_components/confirm-dialog/confirm-dialog.html">
 <link rel="import" href="../bower_components/jquery/dist/jquery.js">
-<link rel="import" href="../bower_components/google-apis/google-maps-api.html">
-<link rel="import" href="../bower_components/paper-input/paper-input.html">
-<link rel="import" href="../bower_components/iron-form/iron-form.html">
-<link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
-<link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
-<link rel="import" href="../bower_components/paper-button/paper-button.html">
-<link rel="import" href="../bower_components/iron-input/iron-input.html">
-<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
-<link rel="import" href="../bower_components/iron-list/iron-list.html">
-<link rel="import" href="../bower_components/iron-image/iron-image.html">
-<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
-<link rel="import" href="../bower_components/paper-elements/paper-elements.html">
-<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
-<link rel="import" href="../bower_components/iron-collapse/iron-collapse.html">
-<link rel="import" href="../bower_components/paper-item/paper-item.html">
-<link rel="import" href="../bower_components/paper-listbox/paper-listbox.html">
-<link rel="import" href="../bower_components/paper-divider/paper-divider.html">
-
-
-<link rel="import" href="components/geo-location/geo-location.html">
 <link rel="import" href="header.html">
 <link rel="import" href="app-firebase.html">
 <link rel="import" href="components/auth-loader.html">
@@ -397,7 +377,7 @@
 
                 var file = this._fileForPage(page);
                 if (!page || !file) {
-                    redirect('/test');
+                    redirect('/posts/list');
                     return;
                 }
 
@@ -412,16 +392,16 @@
 
             _fileForPage: function(page) {
                 switch (page) {
-                    case 'posts':      return 'src/pages/posts/posts-page.html';
-                    case 'post':       return 'src/pages/post/post-page.html';
-                    case 'new':        return 'src/pages/new-post/new-post-page.html';
-                    case 'user':       return 'src/pages/user/user-page.html';
-                    case 'login':      return 'src/pages/login-register/login-register-page.html';
-                    case 'register':   return 'src/pages/login-register/login-register-page.html';
-                    case 'feedback':   return 'src/pages/feedback/feedback-page.html';
-                    case 'admin':      return 'src/pages/admin/admin-page.html';
-                    case 'test':       return '../src/pages/test/test-page.html';
-                    case 'messages':   return 'src/pages/messages/messages-page.html';
+                    case 'posts':      return '/src/pages/posts/posts-page.html';
+                    case 'post':       return '/src/pages/post/post-page.html';
+                    case 'new':        return '/src/pages/new-post/new-post-page.html';
+                    case 'user':       return '/src/pages/user/user-page.html';
+                    case 'login':      return '/src/pages/login-register/login-register-page.html';
+                    case 'register':   return '/src/pages/login-register/login-register-page.html';
+                    case 'feedback':   return '/src/pages/feedback/feedback-page.html';
+                    case 'admin':      return '/src/pages/admin/admin-page.html';
+                    case 'test':       return '/src/pages/test/test-page.html';
+                    case 'messages':   return '/src/pages/messages/messages-page.html';
                 }
             },
 
