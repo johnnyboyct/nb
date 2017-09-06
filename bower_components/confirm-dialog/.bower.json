@@ -1,0 +1,28 @@
+{
+  "name": "confirm-dialog",
+  "description": "A simple paper-dialog wrapper.",
+  "main": "confirm-dialog.html",
+  "dependencies": {
+    "polymer": "^1.8.1",
+    "paper-dialog": "^1.1.0",
+    "paper-button": "^1.0.14",
+    "paper-styles": "^1.2.0"
+  },
+  "devDependencies": {
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^1.0.0",
+    "web-component-tester": "^4.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0"
+  },
+  "homepage": "https://github.com/jifalops/confirm-dialog",
+  "version": "0.1.1",
+  "_release": "0.1.1",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.1.1",
+    "commit": "1c3e9381fae5a63b703d9edbab0dcaed1d2bbb22"
+  },
+  "_source": "https://github.com/jifalops/confirm-dialog.git",
+  "_target": "^0.1.1",
+  "_originalSource": "confirm-dialog"
+}

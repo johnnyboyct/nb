@@ -1,0 +1,141 @@
+<!doctype html>
+<html>
+  <head>
+    <title>geo-query-input demo</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+
+    <link rel="import" href="../geo-query-input.html">
+
+    <style is="custom-style" include="demo-pages-shared-styles">
+    </style>
+  </head>
+  <body>
+
+    <div class="vertical-section-container centered">
+      <div>
+        Note mutliple instances in the same page share the same local-storage location
+        until <a href="https://github.com/PolymerElements/app-storage/pull/76">this pull request</a>
+        gets accepted.
+      </div>
+
+      <h3>Basic use</h3>
+      <demo-snippet>
+        <template is="dom-bind" id="scope">
+          <geo-query-input on-query-changed="queryChanged"></geo-query-input>
+          <div id="query"></div>
+          <script>
+            var scope = document.getElementById('scope');
+            scope.queryChanged = function(e, data) {
+              scope.$.query.innerHTML = 'Query:'
+                + '<br>useCurrentLocation: ' + data.useCurrentLocation
+                + '<br>search: ' + data.search
+                + '<br>radiusKm: ' + data.radiusKm;
+            }
+          </script>
+        </template>
+      </demo-snippet>
+
+      <h3>Using the `submit-button` slot</h3>
+      <demo-snippet>
+        <template is="dom-bind" id="scope2">
+          <geo-query-input id="input2">
+            <div slot="submit-button">
+              <button on-tap="getQuery" style="margin-left:8px">Submit</button>
+            </div>
+          </geo-query-input>
+          <div id="query2"></div>
+          <script>
+            var scope2 = document.getElementById('scope2');
+            scope2.getQuery = function(e) {
+              var data = scope2.$.input2.getCurrentQuery();
+              scope2.$.query2.innerHTML = 'Query:'
+                + '<br>useCurrentLocation: ' + data.useCurrentLocation
+                + '<br>search: ' + data.search
+                + '<br>radiusKm: ' + data.radiusKm
+                + '<br>searchInvalid: ' + data.searchInvalid;
+            }
+          </script>
+        </template>
+      </demo-snippet>
+
+      <h3>Session storage</h3>
+      <demo-snippet>
+        <template is="dom-bind" id="scope3">
+          <geo-query-input session-only on-query-changed="queryChanged"></geo-query-input>
+          <div id="query3"></div>
+          <script>
+            var scope3 = document.getElementById('scope3');
+            scope3.queryChanged = function(e, data) {
+              scope3.$.query3.innerHTML = 'Query:'
+                + '<br>useCurrentLocation: ' + data.useCurrentLocation
+                + '<br>search: ' + data.search
+                + '<br>radiusKm: ' + data.radiusKm;
+            }
+          </script>
+        </template>
+      </demo-snippet>
+
+      <h3>No storage</h3>
+      <demo-snippet>
+        <template is="dom-bind" id="scope4">
+          <geo-query-input no-storage on-query-changed="queryChanged"></geo-query-input>
+          <div id="query4"></div>
+          <script>
+            var scope4 = document.getElementById('scope4');
+            scope4.queryChanged = function(e, data) {
+              scope4.$.query4.innerHTML = 'Query:'
+                + '<br>useCurrentLocation: ' + data.useCurrentLocation
+                + '<br>search: ' + data.search
+                + '<br>radiusKm: ' + data.radiusKm;
+            }
+          </script>
+        </template>
+      </demo-snippet>
+
+      <h3>Styled</h3>
+      <demo-snippet>
+        <template is="dom-bind" id="scope5">
+          <style is="custom-style">
+            geo-query-input.styled {
+              --gqi-container: {
+                @apply --layout-wrap;
+              };
+              --gqi-radius-dropdown-width: 9em;
+              --gqi-unit-dropdown-width: 6em;
+              --gqi-dropdown-icon-size: 24px;
+              --gqi-search-input-width: 10em;
+              --gqi-font: {
+                font-size: 12pt;
+              };
+              --gqi-font-small: {
+                font-size: 10pt;
+                text-decoration: underline;
+              };
+              --gqi-checkbox-size: 24px;
+              --gqi-checkbox-label-spacing: 8px;
+              --gqi-spacing: 8px;
+              --gqi-dropdown-spacing: 6px;
+            }
+          </style>
+          <geo-query-input class="styled" on-query-changed="queryChanged"></geo-query-input>
+          <div id="query5"></div>
+          <script>
+            var scope5 = document.getElementById('scope5');
+            scope5.queryChanged = function(e, data) {
+              scope5.$.query5.innerHTML = 'Query:'
+                + '<br>useCurrentLocation: ' + data.useCurrentLocation
+                + '<br>search: ' + data.search
+                + '<br>radiusKm: ' + data.radiusKm;
+            }
+          </script>
+        </template>
+      </demo-snippet>
+    </div>
+
+  </body>
+</html>

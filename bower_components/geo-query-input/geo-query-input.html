@@ -1,0 +1,344 @@
+<link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../paper-listbox/paper-listbox.html">
+<link rel="import" href="../paper-item/paper-item.html">
+<link rel="import" href="../paper-checkbox/paper-checkbox.html">
+<link rel="import" href="../paper-input/paper-input.html">
+<link rel="import" href="../app-storage/app-localstorage/app-localstorage-document.html">
+<link rel="import" href="../paper-styles/typography.html">
+<link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
+
+<!--
+`geo-query-input`
+Specify the center point and search radius for geographical queries.
+
+Custom property | Description | Default
+----------------|-------------|----------
+`--gqi-container` | Mixin applied to the container.
+`--gqi-radius-dropdown-width` | The width of the radius dropdown. | 4em
+`--gqi-unit-dropdown-width` | The width of the radius-unit dropdown. | 3em
+`--gqi-dropdown-icon-size` | The height and width of the dropdown menu icons. | 16px
+`--gqi-search-input-width` | The width of the search input field. | 6em
+`--gqi-font` | Mixin applied to several elements' font.
+`--gqi-font-small` | Mixin applied the the font of the "or" span.
+`--gqi-checkbox-size` | The height and width of the checkbox. | 14px
+`--gqi-checkbox-label-spacing` | Space between the checkbox and its label. | 4px
+`--gqi-spacing` | The space between each element, except the two dropdowns. | 6px
+`--gqi-dropdown-spacing` | The space between the radius and unit dropdowns. | 2px
+
+@demo demo/index.html
+-->
+
+<dom-module id="geo-query-input">
+  <template>
+    <style>
+      :host {
+        display: block;
+        --gqi-font: {
+          @apply --paper-font-common-base;
+          font-size: 12px;
+          font-weight: 400;
+          line-height: 16px;
+        };
+        --gqi-font-small: {
+          @apply --paper-font-common-base;
+          font-size: 10px;
+          font-weight: 300;
+          line-height: 14px;
+        };
+
+        @apply --gqi-font;
+      }
+
+      .container {
+        @apply --layout-horizontal;
+        @apply --layout-center;
+        @apply --gqi-container;
+      }
+
+      .or {
+        font-style: italic;
+        @apply --gqi-font-small;
+      }
+
+      .radius-menu, .unit-menu {
+        --paper-input-container-input: {
+          text-align: right;
+          @apply --gqi-font;
+        };
+        --iron-icon-width: var(--gqi-dropdown-icon-size, 16px);
+        --iron-icon-height: var(--gqi-dropdown-icon-size, 16px);
+      }
+      .radius-menu {
+        width: var(--gqi-radius-dropdown-width, 4em);
+      }
+      .unit-menu {
+        width: var(--gqi-unit-dropdown-width, 3em);
+      }
+
+      paper-input {
+        display: inline-block;
+        width: var(--gqi-search-input-width, 6em);
+        --paper-input-container-label: {
+          @apply --gqi-font;
+        };
+        --paper-input-container-input: {
+          @apply --gqi-font;
+        };
+      }
+      paper-item {
+        --paper-item: {
+          @apply --gqi-font;
+        };
+      }
+
+      paper-checkbox {
+        --paper-checkbox-size: var(--gqi-checkbox-size, 14px);
+        --paper-checkbox-label-spacing: var(--gqi-checkbox-label-spacing, 4px);
+      }
+
+      .spacer {
+        display: inline-block;
+        width: var(--gqi-spacing, 6px);
+      }
+      .dropdown-spacer {
+        display: inline-block;
+        width: var(--gqi-dropdown-spacing, 2px);
+      }
+    </style>
+    <template is="dom-if" if="[[!noStorage]]" restamp>
+      <!-- FIXME multiple uses in the same page can be accomplished after https://github.com/PolymerElements/app-storage/pull/76 -->
+      <!-- <app-localstorage-document
+        sessionOnly="[[sessionOnly]]"
+        key="[[_keyFor('radius')]]"
+        data="{{radius}}"></app-localstorage-document>
+      <app-localstorage-document
+        sessionOnly="[[sessionOnly]]"
+        key="[[_keyFor('unit')]]"
+        data="{{unit}}"></app-localstorage-document>
+      <app-localstorage-document
+        sessionOnly="[[sessionOnly]]"
+        key="[[_keyFor('search')]]"
+        data="{{search}}"></app-localstorage-document>
+      <app-localstorage-document
+        sessionOnly="[[sessionOnly]]"
+        key="[[_keyFor('useCurrentLocation')]]"
+        data="{{useCurrentLocation}}"></app-localstorage-document> -->
+      <app-localstorage-document
+        session-only="[[sessionOnly]]"
+        key="geoQueryInputRadius"
+        data="{{radius}}"></app-localstorage-document>
+      <app-localstorage-document
+        session-only="[[sessionOnly]]"
+        key="geoQueryInputUnit"
+        data="{{unit}}"></app-localstorage-document>
+      <app-localstorage-document
+        session-only="[[sessionOnly]]"
+        key="geoQueryInputSearch"
+        data="{{search}}"></app-localstorage-document>
+      <app-localstorage-document
+        session-only="[[sessionOnly]]"
+        key="geoQueryInputUseCurrentLocation"
+        data="{{useCurrentLocation}}"></app-localstorage-document>
+    </template>
+    <div class="container">
+        <span>Within</span>
+        <div class="spacer"></div>
+        <paper-dropdown-menu class="radius-menu" label="radius" no-animations noink no-label-float>
+          <paper-listbox
+            class="dropdown-content"
+            attr-for-selected="value"
+            selected="{{radius}}">
+            <template is="dom-repeat" items="[[radiusOptions]]">
+              <paper-item value="[[item]]">[[item]]</paper-item>
+            </template>
+          </paper-listbox>
+        </paper-dropdown-menu>
+        <div class="dropdown-spacer"></div>
+        <paper-dropdown-menu class="unit-menu" label="unit" no-animations noink no-label-float>
+          <paper-listbox
+            class="dropdown-content"
+            attr-for-selected="value"
+            selected="{{unit}}">
+            <paper-item value="km">km</paper-item>
+            <paper-item value="mi">mi</paper-item>
+          </paper-listbox>
+        </paper-dropdown-menu>
+        <div class="spacer"></div>
+        <span>of</span>
+        <div class="spacer"></div>
+        <paper-input
+          id="searchInput"
+          value="{{search}}"
+          label="[[inputLabel]]"
+          auto-validate
+          no-label-float
+          focused="{{searchInputFocused}}"
+          minlength="3"
+          error-message="[[errorMsg]]">
+        </paper-input>
+        <div class="spacer"></div>
+        <span class="or">or</span>
+        <div class="spacer"></div>
+        <paper-checkbox id="checkbox" noink checked="{{useCurrentLocation}}">me</paper-checkbox>
+        <slot name="submit-button"></slot>
+    </div>
+  </template>
+
+  <script>
+  Polymer({
+    is: 'geo-query-input',
+    properties: {
+      /**
+       * Whether to use miles or kilometers ('mi' or 'km'). Defaults to miles.
+       */
+      unit: {
+        type: String,
+        value: 'mi',
+        notify: true
+      },
+
+      /**
+       * The label for the search input.
+       */
+      inputLabel: {
+        type: String,
+        value: 'search'
+      },
+
+      /**
+       * The error message for the search input.
+       */
+      errorMsg: {
+        type: String,
+        value: '3 char min'
+      },
+
+      /**
+       * The value of the search input.
+       */
+      search: {
+        type: String,
+        notify: true,
+        observer: '_searchChanged'
+      },
+
+      /**
+       * Whether to use the user's current location as opposed to the search input field.
+       */
+      useCurrentLocation: {
+        type: Boolean,
+        value: false,
+        reflectToAttribute: true,
+        notify: true,
+      },
+
+      /**
+       * The distance to search from [lat, lng], in miles or kilometers depending
+       * on the `unit` property.
+       */
+      radius: {
+        type: Number,
+        value: 50,
+        notify: true
+      },
+
+      /**
+       * The values for the radius dropdown chooser.
+       */
+      radiusOptions: {
+        type: Array,
+        value: [10, 25, 50, 100, 200]
+      },
+
+      /**
+       * If true, the data will automatically be cleared from storage when
+       * the page session ends (i.e. when the user has navigated away from
+       * the page).
+       */
+      sessionOnly: {
+        type: Boolean,
+        value: false
+      },
+
+      /**
+       * Whether to allow backup to local/session storage. Overrides sessionOnly when true
+       */
+      noStorage: {
+        type: Boolean,
+        value: false,
+        reflectToAttribute: true
+      },
+
+      /**
+       * The number of milliseconds to wait for input changes
+       * before firing `query-changed` after an input changes.
+       */
+      debounceDuration: {
+        type: Number,
+        value: 1000
+      }
+    },
+    observers: [
+      '_queryChanged(unit, radius, search, useCurrentLocation)',
+      '_searchInputFocusChanged(searchInputFocused)'
+    ],
+
+    created: function() {
+      // this.debouncer = new Polymer.Debouncer(this);
+    },
+
+    _searchChanged: function(search, old) {
+      if (search || old) {
+        this.useCurrentLocation = false;
+      }
+    },
+
+    _searchInputFocusChanged: function(focused) {
+      if (focused) {
+        this.$.searchInput.$.input.select();
+      }
+    },
+
+    _queryChanged: function(unit, radius, search, useCurrentLocation) {
+      if (radius && (useCurrentLocation || (search && this.$.searchInput.validate()))) {
+        this.debounce('query-changed', function() {
+          this.fire('query-changed', {
+            radiusKm: unit == 'km' ? radius : (radius * 1.60934),
+            search: search,
+            useCurrentLocation: useCurrentLocation
+          });
+          this.$.searchInput.blur();
+          this.$.checkbox.blur();
+        }.bind(this), this.debounceDuration, this);
+      }
+    },
+
+    /**
+     * Return the current state of the inputs.
+     */
+    getCurrentQuery: function() {
+      return {
+        radiusKm: this.unit == 'km' ? this.radius : (this.radius * 1.60934),
+        search: this.search,
+        useCurrentLocation: this.useCurrentLocation,
+        searchInvalid: !this.$.searchInput.validate()
+      }
+    },
+
+    /** work around multiple instances in one page sharing the same local storage */
+    _keyFor: function(type) {
+      console.log('key:', this.id + type);
+      return 'geoQueryInput' + this.id + type;
+    }
+
+
+    /**
+     * Triggered when a user taps the submit button.
+     * @event query-changed
+     * @param {useCurrentLocation} boolean Whether the user's current location should be used.
+     * @param {search} string The string to geocode if not using the user's current location.
+     * @param {radiusKm} number The radius in kilometers to search from the center point.
+     */
+  });
+  </script>
+</dom-module>

@@ -1,0 +1,26 @@
+{
+  "name": "value-history",
+  "description": "Record property changes with this handy little element.",
+  "main": "value-history.html",
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.4.0"
+  },
+  "devDependencies": {
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^1.0.0",
+    "web-component-tester": "^4.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/jifalops/value-history",
+  "version": "0.1.0",
+  "_release": "0.1.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.1.0",
+    "commit": "5e7c0591a6ff56a6963eac0c7a1fb6ce12565e06"
+  },
+  "_source": "https://github.com/jifalops/value-history.git",
+  "_target": "^0.1.0",
+  "_originalSource": "value-history"
+}

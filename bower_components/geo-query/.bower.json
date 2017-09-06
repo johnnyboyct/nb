@@ -1,0 +1,38 @@
+{
+  "name": "geo-query",
+  "description": "A Polymer web component wrapper for GeoFire's GeoQuery.",
+  "main": "geo-query.html",
+  "keywords": [
+    "web-components",
+    "geofire",
+    "geo",
+    "location",
+    "query",
+    "firebase",
+    "fire"
+  ],
+  "dependencies": {
+    "polymer": "^1.8.1",
+    "geofire": "^4.1.2"
+  },
+  "devDependencies": {
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^1.0.0",
+    "web-component-tester": "^4.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0",
+    "firebase": "^3.7.0",
+    "paper-checkbox": "^1.4.2"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/jifalops/geo-query",
+  "version": "0.3.1",
+  "_release": "0.3.1",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.3.1",
+    "commit": "cecf5ce12eafb71171c45af1c934d2c2e9b84a59"
+  },
+  "_source": "https://github.com/jifalops/geo-query.git",
+  "_target": "^0.3.1",
+  "_originalSource": "geo-query"
+}

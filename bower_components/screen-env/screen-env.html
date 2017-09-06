@@ -1,0 +1,327 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../iron-media-query/iron-media-query.html">
+
+<!--
+`screen-env`
+Differentiate screen types by size, touch ability, and more.
+
+@demo demo/index.html
+-->
+
+<dom-module id="screen-env">
+  <template>
+    <style>
+      :host {
+        display: inline;
+      }
+    </style>
+
+    <iron-media-query full query="handheld" query-matches="{{mediaHandheld}}"></iron-media-query>
+    <iron-media-query full query="screen" query-matches="{{mediaScreen}}"></iron-media-query>
+    <iron-media-query full query="print" query-matches="{{mediaPrint}}"></iron-media-query>
+    <iron-media-query full query="tv" query-matches="{{mediaTv}}"></iron-media-query>
+
+    <iron-media-query query="(orientation: portrait)" query-matches="{{portrait}}"></iron-media-query>
+    <iron-media-query query="(orientation: landscape)" query-matches="{{landscape}}"></iron-media-query>
+
+    <!--
+      Material design handset and tablet definitions
+      https://material.io/guidelines/layout/responsive-ui.html#responsive-ui-breakpoints
+    -->
+    <iron-media-query full query="all and (min-width: 0px) and (max-width: 600px)" query-matches="{{windowExtraSmall}}"></iron-media-query>
+    <iron-media-query full query="all and (min-width: 601px) and (max-width: 960px)" query-matches="{{windowSmall}}"></iron-media-query>
+    <iron-media-query full query="all and (min-width: 961px) and (max-width: 1280px)" query-matches="{{windowMedium}}"></iron-media-query>
+    <iron-media-query full query="all and (min-width: 1281px) and (max-width: 1920px)" query-matches="{{windowLarge}}"></iron-media-query>
+    <iron-media-query full query="all and (min-width: 1921px)" query-matches="{{windowExtraLarge}}"></iron-media-query>
+
+    <iron-media-query full query="all and (min-width: 0px) and (max-width: 360px) and (orientation: portrait)" query-matches="{{mobileSmallPortrait}}"></iron-media-query>
+    <iron-media-query full query="all and (min-width: 361px) and (max-width: 400px) and (orientation: portrait)" query-matches="{{mobileMediumPortrait}}"></iron-media-query>
+    <iron-media-query full query="all and (min-width: 401px) and (max-width: 600px) and (orientation: portrait)" query-matches="{{mobileLargePortrait}}"></iron-media-query>
+    <iron-media-query full query="all and (min-width: 601px) and (max-width: 720px) and (orientation: portrait)" query-matches="{{tabletSmallPortrait}}"></iron-media-query>
+    <iron-media-query full query="all and (min-width: 721px) and (max-width: 840px) and (orientation: portrait)" query-matches="{{tabletLargePortrait}}"></iron-media-query>
+
+    <iron-media-query full query="all and (min-width: 480px) and (max-width: 600px) and (orientation: landscape)" query-matches="{{mobileSmallLandscape}}"></iron-media-query>
+    <iron-media-query full query="all and (min-width: 601px) and (max-width: 720px) and (orientation: landscape)" query-matches="{{mobileMediumLandscape}}"></iron-media-query>
+    <iron-media-query full query="all and (min-width: 721px) and (max-width: 960px) and (orientation: landscape)" query-matches="{{mobileLargeLandscape}}"></iron-media-query>
+    <iron-media-query full query="all and (min-width: 961px) and (max-width: 1024px) and (orientation: landscape)" query-matches="{{tabletSmallLandscape}}"></iron-media-query>
+    <iron-media-query full query="all and (min-width: 1025px) and (max-width: 1280px) and (orientation: landscape)" query-matches="{{tabletLargeLandscape}}"></iron-media-query>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'screen-env',
+      properties: {
+        /**
+         * Whether a touch screen is being used.
+         * Returns `true` if a touchstart event occurs,
+         * `false` if not supported by the browser,
+         * or `null` if supported by the browser but a touch event hasn't occurred.
+         */
+        isTouch: {
+          type: Boolean,
+          readOnly: true,
+          notify: true
+        },
+        /** Changes with `window.onresize` */
+        windowHeight: {
+          type: Number,
+          readOnly: true,
+          notify: true
+        },
+        /** Changes with `window.onresize` */
+        windowWidth: {
+          type: Number,
+          readOnly: true,
+          notify: true
+        },
+        /** Changes with `window.onresize` */
+        windowAspect: {
+          type: Number,
+          readOnly: true,
+          notify: true
+        },
+        /** window.screen */
+        screenHeight: {
+          type: Number,
+          readOnly: true,
+          notify: true
+        },
+        /** window.screen */
+        screenWidth: {
+          type: Number,
+          readOnly: true,
+          notify: true
+        },
+        /** window.screen */
+        screenAspect: {
+          type: Number,
+          readOnly: true,
+          notify: true
+        },
+        /**
+         * Uses `screen.availWidth` and `screen.availHeight`.
+         * Changes with `window.onresize`.
+         */
+        isFullscreen: {
+          type: Boolean,
+          readOnly: true,
+          notify: true
+        },
+        /** CSS media query */
+        mediaHandheld: {
+          type: Boolean,
+          notify: true
+        },
+        /** CSS media query */
+        mediaScreen: {
+          type: Boolean,
+          notify: true
+        },
+        /** CSS media query */
+        mediaPrint: {
+          type: Boolean,
+          notify: true
+        },
+        /** CSS media query */
+        mediaTv: {
+          type: Boolean,
+          notify: true
+        },
+        /** CSS media query */
+        portrait: {
+          type: Boolean,
+          notify: true
+        },
+        /** CSS media query */
+        landscape: {
+          type: Boolean,
+          notify: true
+        },
+        /** Material design CSS media query */
+        windowExtraSmall: {
+          type: Boolean,
+          notify: true
+        },
+        /** Material design CSS media query */
+        windowSmall: {
+          type: Boolean,
+          notify: true
+        },
+        /** Material design CSS media query */
+        windowMedium: {
+          type: Boolean,
+          notify: true
+        },
+        /** Material design CSS media query */
+        windowLarge: {
+          type: Boolean,
+          notify: true
+        },
+        /** Material design CSS media query */
+        windowExtraLarge: {
+          type: Boolean,
+          notify: true
+        },
+        /** Material design CSS media query */
+        mobileSmallPortrait: {
+          type: Boolean,
+          notify: true
+        },
+        /** Material design CSS media query */
+        mobileMediumPortrait: {
+          type: Boolean,
+          notify: true
+        },
+        /** Material design CSS media query */
+        mobileLargePortrait: {
+          type: Boolean,
+          notify: true
+        },
+        /** Material design CSS media query */
+        tabletSmallPortrait: {
+          type: Boolean,
+          notify: true
+        },
+        /** Material design CSS media query */
+        tabletLargePortrait: {
+          type: Boolean,
+          notify: true
+        },
+        /** Material design CSS media query */
+        mobileSmallLandscape: {
+          type: Boolean,
+          notify: true
+        },
+        /** Material design CSS media query */
+        mobileMediumLandscape: {
+          type: Boolean,
+          notify: true
+        },
+        /** Material design CSS media query */
+        mobileLargeLandscape: {
+          type: Boolean,
+          notify: true
+        },
+        /** Material design CSS media query */
+        tabletSmallLandscape: {
+          type: Boolean,
+          notify: true
+        },
+        /** Material design CSS media query */
+        tabletLargeLandscape: {
+          type: Boolean,
+          notify: true
+        },
+        /** Derived from multiple CSS media queries */
+        isMobile: {
+          type: Boolean,
+          computed: '_computeIsMobile(mobileSmallPortrait, mobileMediumPortrait, mobileLargePortrait, mobileSmallLandscape, mobileMediumLandscape, mobileLargeLandscape, uaIsMobile, mediaTv)',
+          notify: true
+        },
+        /** Derived from multiple CSS media queries */
+        isTablet: {
+          type: Boolean,
+          computed: '_computeIsTablet(tabletSmallPortrait, tabletLargePortrait, tabletSmallLandscape, tabletLargeLandscape, uaIsTablet, mediaTv)',
+          notify: true
+        },
+        /** If not a mobile or tablet, TVs are also considered desktops. */
+        isDesktop: {
+          type: Boolean,
+          computed: '_computeIsDesktop(isMobile, isTablet)',
+          notify: true
+        },
+        /** User agent check */
+        uaIsMobile: {
+          type: Boolean,
+          // readyOnly: true,
+          notify: true
+        },
+        /** User agent check */
+        uaIsTablet: {
+          type: Boolean,
+          // readyOnly: true,
+          notify: true
+        },
+        /** User agent check */
+        uaIsDesktop: {
+          type: Boolean,
+          // readyOnly: true,
+          notify: true
+        },
+        /** Alias for `windowExtraSmall` (600px wide or less) */
+        narrowWidth: {
+          type: Boolean,
+          notify: true,
+          computed: '_computeNarrowWidth(windowExtraSmall)'
+        }
+      },
+
+      attached: function() {
+        this._setWindowDimens();
+        window.addEventListener('resize', function(e) {
+          this._setWindowDimens();
+        }.bind(this));
+
+        // Browser touch support
+        if ('ontouchstart' in window || navigator.maxTouchPoints) {
+          this._setIsTouch(null);
+          window.addEventListener('touchstart', function onFirstTouch() {
+            this._setIsTouch(true);
+            window.removeEventListener('touchstart', onFirstTouch, false);
+          }.bind(this), false);
+        } else {
+          this._setIsTouch(false);
+        }
+
+        this.uaIsMobile = this._uaIsMobile();
+        this.uaIsTablet = !this.uaIsMobile && this._uaIsMobileOrTablet();
+        this.uaIsDesktop = !this.uaIsMobile && !this.uaIsTablet;
+      },
+
+      _setWindowDimens: function() {
+        this._setWindowWidth(window.innerWidth
+          || document.documentElement.clientWidth
+          || document.body.clientWidth);
+
+        this._setWindowHeight(window.innerHeight
+          || document.documentElement.clientHeight
+          || document.body.clientHeight);
+
+        this._setWindowAspect(this.windowWidth / this.windowHeight);
+
+        this._setScreenWidth(window.screen.width);
+        this._setScreenHeight(window.screen.height);
+        this._setScreenAspect(this.screenWidth / this.screenHeight);
+
+        this._setIsFullscreen(this.windowWidth == window.screen.availWidth
+          && this.windowHeight == window.screen.availHeight);
+      },
+
+      _computeNarrowWidth: function(windowExtraSmall) {
+        return windowExtraSmall;
+      },
+      /* [small|medium|large] [portrait|landscape] */
+      _computeIsMobile: function(sp, mp, lp, sl, ml, ll, uaIsMobile, mediaTv) {
+        return sp || mp || lp || sl || ml || ll || (uaIsMobile && !mediaTv);
+      },
+      _computeIsTablet: function(sp, lp, sl, ll, uaIsTablet, mediaTv) {
+        return sp || lp || sl || ll || (uaIsTablet && !mediaTv);
+      },
+      _computeIsDesktop: function(isMobile, isTablet) {
+        return !isMobile && !isTablet;
+      },
+      /** http://stackoverflow.com/a/11381730/884522 */
+      _uaIsMobile: function() {
+        var check = false;
+        (function(a){if(/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino/i.test(a)||/1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(a.substr(0,4))) check = true;})(navigator.userAgent||navigator.vendor||window.opera);
+        return check;
+      },
+      /** http://stackoverflow.com/a/11381730/884522 */
+      _uaIsMobileOrTablet: function() {
+        var check = false;
+        (function(a){if(/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino|android|ipad|playbook|silk/i.test(a)||/1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(a.substr(0,4))) check = true;})(navigator.userAgent||navigator.vendor||window.opera);
+        return check;
+      }
+    });
+  </script>
+</dom-module>

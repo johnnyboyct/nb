@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>screen-env demo</title>
+
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+    <link rel="import" href="../screen-env.html">
+
+    <style is="custom-style" include="demo-pages-shared-styles">
+    </style>
+  </head>
+  <body>
+    <div class="vertical-section-container centered">
+      <h3>Basic screen-env demo</h3>
+      <demo-snippet>
+        <template is="dom-bind" id="ex1">
+          <screen-env
+            narrow-width="{{narrowWidth}}"
+            is-touch="{{isTouch}}"
+            is-mobile="{{isMobile}}"
+            is-tablet="{{isTablet}}"
+            is-desktop="{{isDesktop}}"
+            is-fullscreen="{{isFullscreen}}"
+            window-height="{{windowHeight}}"
+            window-width="{{windowWidth}}"
+            window-aspect="{{windowAspect}}"
+            screen-height="{{screenHeight}}"
+            screen-width="{{screenWidth}}"
+            screen-aspect="{{screenAspect}}"
+            media-handheld="{{mediaHandheld}}"
+            media-screen="{{mediaScreen}}"
+            media-print="{{mediaPrint}}"
+            media-tv="{{mediaTv}}"
+            portrait="{{portrait}}"
+            landscape="{{landscape}}"
+            window-extra-small="{{windowExtraSmall}}"
+            window-small="{{windowSmall}}"
+            window-medium="{{windowMedium}}"
+            window-large="{{windowLarge}}"
+            window-extra-large="{{windowExtraLarge}}"
+            mobile-small-portrait="{{mobileSmallPortrait}}"
+            mobile-medium-portrait="{{mobileMediumPortrait}}"
+            mobile-large-portrait="{{mobileLargePortrait}}"
+            tablet-small-portrait="{{tabletSmallPortrait}}"
+            tablet-large-portrait="{{tabletLargePortrait}}"
+            mobile-small-landscape="{{mobileSmallLandscape}}"
+            mobile-medium-landscape="{{mobileMediumLandscape}}"
+            mobile-large-landscape="{{mobileLargeLandscape}}"
+            tablet-small-landscape="{{tabletSmallLandscape}}"
+            tablet-large-landscape="{{tabletLargeLandscape}}"
+            ua-is-mobile="{{uaIsMobile}}"
+            ua-is-tablet="{{uaIsTablet}}"
+            ua-is-desktop="{{uaIsDesktop}}">
+          </screen-env>
+          <table border="1">
+            <tr><th colspan="3">Main abilities</th></tr>
+            <tr><td>narrowWidth</td><th>[[narrowWidth]]</th>
+                <td>Mobile/tablet+, (600px or less)</td></tr>
+            <tr><td>isTouch</td><th>[[isTouch]]</th>
+                <td>false: no browser support<br/>
+                    null: browser support<br/>
+                    true: touchstart has occurred</td></tr>
+            <tr><td>uaIsDesktop</td><th>[[uaIsDesktop]]</th>
+                <td>User requested desktop site</td></tr>
+            <tr><td>isMobile</td><th>[[isMobile]]</th>
+                <td>Material design + UA/media check</td></tr>
+          </table>
+          <table>
+            <tr><th colspan="2"><a href="https://material.io/guidelines/layout/responsive-ui.html#responsive-ui-breakpoints"
+              >Material design breakpoints</a></th></tr>
+            <tr><td>windowExtraSmall</td><td>[[windowExtraSmall]]</td></tr>
+            <tr><td>windowSmall</td><td>[[windowSmall]]</td></tr>
+            <tr><td>windowMedium</td><td>[[windowMedium]]</td></tr>
+            <tr><td>windowLarge</td><td>[[windowLarge]]</td></tr>
+            <tr><td>windowExtraLarge</td><td>[[windowExtraLarge]]</td></tr>
+
+            <tr><td>mobileSmallPortrait</td><td>[[mobileSmallPortrait]]</td></tr>
+            <tr><td>mobileMediumPortrait</td><td>[[mobileMediumPortrait]]</td></tr>
+            <tr><td>mobileLargePortrait</td><td>[[mobileLargePortrait]]</td></tr>
+            <tr><td>tabletSmallPortrait</td><td>[[tabletSmallPortrait]]</td></tr>
+            <tr><td>tabletLargePortrait</td><td>[[tabletLargePortrait]]</td></tr>
+
+            <tr><td>mobileSmallLandscape</td><td>[[mobileSmallLandscape]]</td></tr>
+            <tr><td>mobileMediumLandscape</td><td>[[mobileMediumLandscape]]</td></tr>
+            <tr><td>mobileLargeLandscape</td><td>[[mobileLargeLandscape]]</td></tr>
+            <tr><td>tabletSmallLandscape</td><td>[[tabletSmallLandscape]]</td></tr>
+            <tr><td>tabletLargeLandscape</td><td>[[tabletLargeLandscape]]</td></tr>
+
+            <tr><th colspan="2">Others</th></tr>
+            <tr><td>isTablet</td><td>[[isTablet]]</td></tr>
+            <tr><td>isDesktop</td><td>[[isDesktop]]</td></tr>
+            <tr><td>isFullscreen</td><td>[[isFullscreen]]</td></tr>
+
+            <tr><td>windowHeight</td><td>[[windowHeight]]</td></tr>
+            <tr><td>windowWidth</td><td>[[windowWidth]]</td></tr>
+            <tr><td>windowAspect</td><td>[[windowAspect]]</td></tr>
+
+            <tr><td>screenHeight</td><td>[[screenHeight]]</td></tr>
+            <tr><td>screenWidth</td><td>[[screenWidth]]</td></tr>
+            <tr><td>screenAspect</td><td>[[screenAspect]]</td></tr>
+
+            <tr><td>mediaHandheld</td><td>[[mediaHandheld]]</td></tr>
+            <tr><td>mediaScreen</td><td>[[mediaScreen]]</td></tr>
+            <tr><td>mediaPrint</td><td>[[mediaPrint]]</td></tr>
+            <tr><td>mediaTv</td><td>[[mediaTv]]</td></tr>
+
+            <tr><td>portrait</td><td>[[portrait]]</td></tr>
+            <tr><td>landscape</td><td>[[landscape]]</td></tr>
+
+            <tr><td>uaIsMobile</td><td>[[uaIsMobile]]</td></tr>
+            <tr><td>uaIsTablet</td><td>[[uaIsTablet]]</td></tr>
+          </table>
+        </template>
+      </demo-snippet>
+    </div>
+  </body>
+</html>

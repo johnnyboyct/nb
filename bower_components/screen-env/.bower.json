@@ -1,0 +1,26 @@
+{
+  "name": "screen-env",
+  "description": "Differentiate screen types by size, touch ability, and more.",
+  "main": "screen-env.html",
+  "dependencies": {
+    "polymer": "^1.8.1",
+    "iron-media-query": "^1.0.8"
+  },
+  "devDependencies": {
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^1.0.0",
+    "web-component-tester": "^4.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0"
+  },
+  "homepage": "https://github.com/jifalops/screen-env",
+  "version": "0.3.0",
+  "_release": "0.3.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.3.0",
+    "commit": "39bb75556478b1928aefb71df9ef5770666a76c5"
+  },
+  "_source": "https://github.com/jifalops/screen-env.git",
+  "_target": "^0.3.0",
+  "_originalSource": "screen-env"
+}
