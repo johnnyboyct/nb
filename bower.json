@@ -57,7 +57,8 @@
     "tags-input": "jifalops/tags-input#^0.3.0",
     "confirm-dialog": "^0.1.1",
     "iron-form": "^2.0.0",
-    "paper-elements": "^1.0.7"
+    "paper-elements": "^1.0.7",
+    "paper-divider": "^1.0.0"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",

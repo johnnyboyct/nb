@@ -6,11 +6,62 @@
 <link rel="import" href="/bower_components/paper-button/paper-button.html">
 <link rel="import" href="/bower_components/iron-input/iron-input.html">
 <link rel="import" href="/bower_components/iron-ajax/iron-ajax.html">
-<link rel="import" href="/bower_components/geo-location/geo-location.html">
 <link rel="import" href="/bower_components/iron-list/iron-list.html">
 <link rel="import" href="/bower_components/iron-image/iron-image.html">
 <link rel="import" href="/bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="/bower_components/paper-elements/paper-elements.html">
+<link rel="import" href="/bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="/bower_components/iron-collapse/iron-collapse.html">
+<link rel="import" href="/bower_components/paper-item/paper-item.html">
+<link rel="import" href="/bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="/bower_components/paper-divider/paper-divider.html">
+
+<link rel="import" href="/src/components/geo-location/geo-location.html">
+
+
+
+<custom-style>
+	<style is="custom-style">
+	:host {
+		display: block;
+		@apply --paper-font-common-base;
+	}
+	.flex-horizontal-with-ratios {
+		@apply --layout-horizontal;
+	}
+
+	.flexchild {
+		@apply --layout-flex;
+	}
+
+	.flex2child {
+		@apply --layout-flex-2;
+	}
+
+	.flex3child {
+		@apply --layout-flex-3;
+	}
+
+	.container {
+		background-color: #ccc;
+		padding: 5px;
+		margin: 0;
+	}
+
+	.container>div {
+		padding: 15px;
+		margin: 5px;
+		background-color: white;
+		min-height: 20px;
+	}
+	codelabs-card{
+		height:410px;
+	}
+	#mapcontrols{
+		display: block;
+	}
+	</style>
+</custom-style>
 <!--
 shows incentives
 -->
@@ -41,130 +92,159 @@ Key                              | Description                            | Usag
 
 <dom-module id="nb-incentives">
 
-  <template>
+	<template>
 
-    <style include="nb-incentives-styles"></style>
-<geo-location latitude="{{latitude}}" longitude="{{longitude}}" id="geo"></geo-location>
-<ul>
-  <li>Latitude: [[latitude]]</li>
-  <li>Longitude: [[longitude]]</li>
-</ul>
+		<style include="nb-incentives-styles"></style>
+		<style is="custom-style" include="paper-item-shared-styles"></style>
+		<app-toasts id="toasts"></app-toasts>
+		<notification-toast id="notificationToast"></notification-toast>
+		<confirm-dialog id="confirmDialog"></confirm-dialog>
 
+		<google-maps-api api-key="{{google_maps_api_key}}" version="3" on-api-load="_mapsLoaded"></google-maps-api>
 
-            <codelabs-card heading="Estimated Electricity Production" summary="[[size_premimum]]" category="[[item.category]]"
-                          difficulty="[[item.difficulty]]" duration="[[item.duration}}" tags="[[item.tags]]"
-                          published="[[item.published]]" url="[[item.url]]" currenturl="[[route.prefix]][[route.path]]"
-                          ></codelabs-card>
-
-
-
-    <google-maps-api api-key="{{google_maps_api_key}}" version="3" on-api-load="_mapsLoaded"></google-maps-api>
-[[energy]]
-
-
-
-<paper-card class="rate">
-  <div class="card-content">
-    <div class="rate-header">Rate this album</div>
-    <div class="rate-name">Mac Miller</div>
-    <div>Live from space</div>
-  </div>
-  <div class="card-actions">
-    <paper-icon-button class="rate-icon" icon="star"></paper-icon-button>
-    <paper-icon-button class="rate-icon" icon="star"></paper-icon-button>
-    <paper-icon-button class="rate-icon" icon="star"></paper-icon-button>
-    <paper-icon-button class="rate-icon" icon="star"></paper-icon-button>
-    <paper-icon-button class="rate-icon" icon="star"></paper-icon-button>
-  </div>
-  <div class="rate-image"></div>
-</paper-card>
-
-
-    <iron-list items="[[energy.result]]" as="item" selection-enabled multi-selection>
-      <template>
-        <div>
-          <div class$="[[getClassForItem(item, selected)]]" tabindex$="[[tabIndex]]">
-            <iron-image class="avatar" sizing="contain" src="[[item.image]]"></iron-image>
-            <div class="pad">
-              <div class="primary">[[item.category_name]]</div>
-              <div class="shortText">[[item.program_name]]</div>
-              <div class="longText">[[item.summary]]</div>
-            </div>
-            <iron-icon icon$="[[iconForItem(item)]]"></iron-icon>
-          </div>
-        </div>
-      </template>
-  </iron-list>
-
-  <iron-ajax id="energy"
-  on-error="_handleAjaxError"
-  url="https://developer.nrel.gov/api/energy_incentives/v2/dsire.json"
-  handle-as="json"
-  on-response="_handleAjaxEventfunction"
-  loading-changed="_handleAjaxLoading"
-  debounce-duration="300"
-  on-response="_onAjaxResponse"
-  last-response="{{energy}}">
-</iron-ajax>`
-
-  <iron-form id="form1">
-
-
-
-    <paper-input type="text" name="address" id="address" required label="Address" value="{{address}}">
-      <iron-icon icon="mail" slot="prefix"></iron-icon>
-    </paper-input>
-    <br><br>
-    <paper-button raised on-click="[[initialize()]]" id="update_address">Update Address</paper-button>
-    <paper-button raised on-tap="_calculateValue()" id="calculate">Calculate</paper-button>
-    <br>
-    <div class="output"></div>
-  </iron-form>
+		<iron-ajax id="energy"
+		on-error="_handleAjaxError"
+		on-response="_handleAjaxEventfunction"
+		loading-changed="_handleAjaxLoading"
+		url="https://developer.nrel.gov/api/energy_incentives/v2/dsire.json"
+		handle-as="json"
+		debounce-duration="300"
+		last-response="{{energy}}"></iron-ajax>
 
 
 
 
-  <div class="thumbnail">
-    <div style="width: 100%; height: 500px;" id="mapDiv"></div>
-    <div id="mapDiv45"></div>
-    <div style="display: none;" id="mapDivImage"> </div>
-    <div id="draggable"><img src="img/compass.png"></div>
-    <div class="caption-full">
-    </div>
+
+		<div class="horizontal layout" style="height:100%">
+
+			<div class="flex-1">
 
 
 
-    <div class="text-right">
-      <a id="show-hide-advanced-fields" href="#">Show / Hide Advanced Fields</a>
-    </div>
-    <div id="advanced-fields">
-      <div id='mapcontrols'>
-        <input type="button" class="btn btn-default" id="btnTerrain" value="Terrain">
-        <input type="button" class="btn btn-default" id="btnRoadmap" value="Roadmap">
-        <input type="button" class="btn btn-default" id="btnSatellite" value="Satellite">
-        <input type="button" class="btn btn-default" id="btnHybrid" value="Hybrid">
-        <input type="button" class="btn btn-default" id="btnCompass" value="Compass">
-        <input type="button" class="btn btn-default" id="btnInspector" value="Inspect Roof">
-      </div>
 
-      <br /> INPUTS:
-      <br />
-      <div class="form-group" style="margin-right: 20px;">
-        Orientation of the roof: <input id="azimuth" size="4" value="180" /> (<a href="#" onclick="$('#draggable').toggle();">Show/Hide Compass</a>)
-      </div>
-      <div class="form-group" style="margin-right: 20px;">
-        Tilt: <input id="tilt" size="4" value="20" />
-      </div>
-      <div class="form-group" style="margin-right: 20px;">
-        PPA Price: <input id="ppa" size="4" value="0.15" />
-      </div>
-      <br><br>
-    </div>
-    <div id="results"></div>
-    <div id="results2"></div>
-    <div id="results3"></div>
-  </div>
-  </template>
 
-  <script src="nb-incentives.js"></script>
+
+				<paper-listbox>
+					<paper-item on-click="toggleSection" data-section="location">
+
+						<paper-icon-item  data-section="location">
+							<iron-icon icon="nb-icons:my-location" slot="item-icon"></iron-icon>
+							Location
+						</paper-icon-item>
+					</paper-item>
+					<paper-item  on-click="toggleSection"  data-section="response">
+						<paper-icon-item data-section="response">
+							<iron-icon icon="nb-icons:attach-money" slot="item-icon"></iron-icon>
+							Cost
+						</paper-icon-item>
+					</paper-item>
+				</paper-listbox>
+
+
+				<iron-collapse id="location">
+					<div>
+						<template is="dom-if" if="{{!geoResponseError}}">
+							Your browser located you.
+							<geo-location latitude="{{latitude}}" longitude="{{longitude}}" id="geo" geo-response="_geoResponse" geo-error="_geoError"></geo-location>
+							<ul>
+								<li>Latitude: [[latitude]]</li>
+								<li>Longitude: [[longitude]]</li>
+							</ul>
+						</template>
+						<template is="dom-if" if="{{geoResponseError}}">
+							Cannot determine location
+
+
+
+							<iron-form id="form1">
+								<paper-input type="text" name="address" id="addressInput" required label="Address" value="{{address}}">
+									<iron-icon icon="mail" slot="prefix"></iron-icon>
+								</paper-input>
+							</iron-form>
+						</template>
+						<br><br>
+						<template is="dom-if" if="{{!mapInitialized}}">
+							<paper-button raised on-tap="initialize" id="update_address">Update Address</paper-button>
+						</template>
+						<template is="dom-if" if="{{mapInitialized}}">
+							<paper-button raised on-tap="_calculateValue" id="calculate">Calculate</paper-button>
+						</template>
+						<br>
+
+
+						<paper-listbox>
+								<paper-item on-click="toggleSection" data-section="advanced">
+									Show / Hide Advanced Fields</a>
+								</paper-item>
+						</paper-listbox>
+						<iron-collapse id="advanced">
+						<div id="advanced">
+							<div id='mapcontrols'>
+								<paper-button raised id="btnTerrain" value="Terrain">Terrain</paper-button>
+								<paper-button raised id="btnRoadmap" value="Roadmap">Roadmap</paper-button>
+								<paper-button raised id="btnSatellite" value="Satellite">Satellite</paper-button>
+								<paper-button raised id="btnHybrid" value="Hybrid">Hybrid</paper-button>
+								<paper-button raised id="btnCompass" value="Compass">Compass</paper-button>
+								<paper-button raised id="btnInspector" value="Inspect Roof"> Inspect Roof</paper-button>
+							</div>
+
+							<br /> INPUTS:
+							<br />
+							<div class="form-group" style="margin-right: 20px;">
+								Orientation of the roof:
+								<paper-input type="text" name="azimuth" id="azimuth" required label="azimuth" value="{{azimuth}}"></paper-input>
+							</div>
+							<div class="form-group" style="margin-right: 20px;">
+								<paper-input type="text" name="tilt" id="tilt" required label="Tilt" value="{{tilt}}"></paper-input>
+							</div>
+							<div class="form-group" style="margin-right: 20px;">
+								PPA Price:
+								<paper-input type="text" name="ppa" id="ppa" required label="ppa" value="{{ppa}}"></paper-input>
+							</div>
+							<br><br>
+						</div>
+					</iron-collapse>
+						<div class="output"></div>
+
+					</div>
+				</iron-collapse>
+
+				<iron-collapse id="response">
+					<div>
+						<template is="dom-if" if="{{gotAPIResponse}}">
+
+							<codelabs-card heading="Estimated Electricity Production"
+								card-data="[[electricityAPI.apiResponse]]"
+							></codelabs-card>
+						</template>
+					</div>
+				</iron-collapse>
+
+
+
+
+			</div>
+
+			<div class="flex-3">
+
+				<div class="thumbnail">
+					<div style="width: 100%; height: 500px;" id="mapDiv"></div>
+					<div id="mapDiv45"></div>
+					<div style="display: none;" id="mapDivImage"> </div>
+					<div id="draggable"><img src="img/compass.png"></div>
+					<div class="caption-full">
+					</div>
+
+
+
+
+					<div id="results"></div>
+					<div id="results2"></div>
+					<div id="results3"></div>
+				</div>
+			</div>
+		</div>
+	</template>
+
+	<script src="nb-incentives.js"></script>
 </dom-module>

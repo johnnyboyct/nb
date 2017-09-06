@@ -12,42 +12,42 @@
 
     <link rel="icon" href="favicon.ico" type="image/x-icon" />
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
-    <link rel="shortcut icon" sizes="32x32" href="/images/app-icon-transparent-32.png">
+    <link rel="shortcut icon" sizes="32x32" href="images/app-icon-transparent-32.png">
 
     <!-- See https://goo.gl/qRE0vM --> <!-- Chrome for Android theme color -->
     <meta name="theme-color" content="#00acc1">
 
     <!-- Add to homescreen for Chrome on Android. Fallback for manifest.json -->
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="application-name" content="App Starter">
+    <meta name="application-name" content="New Britain Energy Tools">
 
     <!-- Add to homescreen for Safari on iOS -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="App Starter">
+    <meta name="apple-mobile-web-app-title" content="New Britain Energy Tools">
 
     <!-- Homescreen icons -->
-    <link rel="apple-touch-icon" href="/images/app-icon-48.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="/images/app-icon-72.png">
-    <link rel="apple-touch-icon" sizes="96x96" href="/images/app-icon-96.png">
-    <link rel="apple-touch-icon" sizes="144x144" href="/images/app-icon-144.png">
-    <link rel="apple-touch-icon" sizes="192x192" href="/images/app-icon-192.png">
+    <link rel="apple-touch-icon" href="images/app-icon-48.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/app-icon-72.png">
+    <link rel="apple-touch-icon" sizes="96x96" href="images/app-icon-96.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="images/app-icon-144.png">
+    <link rel="apple-touch-icon" sizes="192x192" href="images/app-icon-192.png">
 
     <!-- Tile icon for Windows 8 (144x144 + tile color) -->
-    <meta name="msapplication-TileImage" content="/images/app-icon-144.png">
-    <meta name="msapplication-TileColor" content="#00acc1">
+    <meta name="msapplication-TileImage" content="images/app-icon-144.png">
+    <meta name="msapplication-TileColor" content="#AB3346">
     <meta name="msapplication-tap-highlight" content="no">
 
     <!-- Load and register pre-caching Service Worker -->
     <script>
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', function() {
-          navigator.serviceWorker.register('/service-worker.js');
+          navigator.serviceWorker.register('service-worker.js');
         });
       }
     </script>
 
-    <script src="/bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
+    <script src="bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
 
     <link rel="import" href="/src/app-shell.html">
 

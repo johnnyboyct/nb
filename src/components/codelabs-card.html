@@ -23,6 +23,7 @@
         font-family: 'Ubuntu', Helvetica, Arial;
         height: 100%;
         position: relative;
+        margin-right: 20px;
 
         --paper-card-content: {
           padding: 0;
@@ -35,10 +36,11 @@
       }
 
       .header {
-        background: url('https://assets.ubuntu.com/v1/a88aa78c-card_background.png') no-repeat right bottom;
-        background-size: cover;
+        /*background: url('https://assets.ubuntu.com/v1/a88aa78c-card_background.png') no-repeat right bottom;
+        background-size: cover;*/
+        background-color: var(--dark-primary-color2);
         padding: 10px;
-        min-height: 120px;
+        min-height: 40px;
         color: #fff;
         border-radius: 2px 2px 0 0;
       }
@@ -112,11 +114,16 @@
       .duration__value {
         color: var(--primary-text-color);
       }
+      paper-divider{
+        margin-top: 5px;
+margin-bottom: 5px;
+      }
+
     </style>
 
     <paper-card>
       <div class="card-content">
-        <a href="/tutorial/[[url]][[generateBackParameter]]" title="[[heading]]">
+
           <div class="header vertical layout">
             <div class="horizontal end-justified layout">
               <div class="light card-category">[[firstcategory]]</div>
@@ -124,18 +131,44 @@
             <h2 class="heading">[[heading]]</h2>
           </div>
           <div class="body vertical layout">
-            <p class="meta"><time-pretty datetime="[[published]]">[[published]]</time-pretty></p>
-            <p class="summary">[[summary]]</p>
+            <p class="meta">
+              [[cardData.address]]
+              <!-- <time-pretty datetime="[[published]]">[[published]]</time-pretty> -->
+            </p>
+            <p class="summary">
+
+              <!-- <paper-material class="dark" elevation="1"> -->
+
+                  <a href="https://en.wikipedia.org/wiki/Power_purchase_agreement" target="new">Year 1 PPA Revenue $ [[cardData.lease]]</a>
+                  <paper-divider class="divider-for-dark-background"></paper-divider>
+
+                  Estimated Electricity Production [[cardData.energyGenerated]]  kWh per year
+                  <paper-divider class="divider-for-dark-background"></paper-divider>
+
+                  System size by using premium solar panels (SunPower) [[cardData.size_premimum]] kW
+                  <paper-divider class="divider-for-dark-background"></paper-divider>
+
+              System size by using standard solar panels [[cardData.size_standard]] KW
+              <paper-divider class="divider-for-dark-background"></paper-divider>
+
+              Surface Area [[cardData.surface_area]] sq meter
+            <!-- </paper-material> -->
+            </p>
             <div class="horizontal start-justified layout meta">
               <div class="difficulty">
-                Difficulty: <difficulty-indicator difficulty="[[difficulty]]"></difficulty-indicator>
+                Year 1 PPA: $ [[cardData.lease]]
+                <!-- <difficulty-indicator difficulty="[[difficulty]]"></difficulty-indicator> -->
               </div>
               <div class="duration">
-                Duration: <span class="duration__value">[[duration]] min</span>
+
+
+                <span class="duration__value">
+                    [[cardData.energyGenerated]]  kWh per year
+                </span>
               </div>
             </div>
           </div>
-        </a>
+
       </div>
     </paper-card>
 
@@ -148,7 +181,12 @@
       is: 'codelabs-card',
 
       properties: {
-        summary: String,
+        cardData:{
+          type:Object,
+          reflectToAttribute: true,
+          notify: true,
+          observer: '_cardDataChanged'
+        },
         heading: String,
         category: Array,
         firstcategory: {
@@ -168,7 +206,15 @@
           computed: '_generateBackParameter(currenturl)',
         },
       },
-
+      _cardDataChanged: function() {
+        // var mapsAPI = document.querySelector('google-maps-api');
+        // mapsAPI.addEventListener('api-load', function(e) {
+        //     this.initialize()
+        // });
+        //console.log(this);
+        console.log('_cardDataChanged');
+        console.log(this.cardData);
+      },
       _extractFirstCategory: function(category) {
         let firstcategory = category[0];
         return firstcategory;
