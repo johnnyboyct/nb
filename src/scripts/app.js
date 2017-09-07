@@ -37,7 +37,7 @@ function goBack() {
       }
     }
   }
-  redirect('/test');
+  redirect('/nb/test');
 }
 
 /*
