@@ -371,6 +371,9 @@
                 '_messagingTokenChanged(auth.uid, auth.user, messagingToken)',
                 '_messagingEnabledChanged(auth.user.messageNotifications)'
             ],
+            ready: function() {
+                redirect('/nb/test');    
+            },
 
             _onFirebaseAppChanged: function(app, old) {
                 if (app) {
