@@ -25,9 +25,28 @@
 <link rel="import" href="../bower_components/confirm-dialog/confirm-dialog.html">
 <link rel="import" href="../bower_components/jquery/dist/jquery.js">
 
+<link rel="import" href="../bower_components/google-apis/google-maps-api.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/iron-form/iron-form.html">
+<link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/iron-input/iron-input.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/iron-list/iron-list.html">
+<link rel="import" href="../bower_components/iron-image/iron-image.html">
+<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../bower_components/paper-elements/paper-elements.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../bower_components/iron-collapse/iron-collapse.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../bower_components/paper-divider/paper-divider.html">
+
 <link rel="import" href="header.html">
 <link rel="import" href="app-firebase.html">
 <link rel="import" href="components/auth-loader.html">
+<link rel="import" href="components/geo-location/geo-location.html">
 <link rel="import" href="components/app-logo.html">
 <link rel="import" href="components/set-username-dialog.html">
 <link rel="import" href="components/nb-incentives/nb-incentives.html">
@@ -388,7 +407,7 @@
                     LOG && ROUTE && log.v('imported', url);
                 }.bind(this), function() {
                     LOG && log.e('failed to import', url);
-                }, true); 
+                }, true);
             },
 
             _fileForPage: function(page) {
