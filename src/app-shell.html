@@ -372,7 +372,7 @@
                 '_messagingEnabledChanged(auth.user.messageNotifications)'
             ],
             ready: function() {
-                redirect('/nb/test');    
+                redirect('/nb/test');
             },
 
             _onFirebaseAppChanged: function(app, old) {
@@ -415,19 +415,26 @@
             },
 
             _fileForPage: function(page) {
+                var p = '';
                 switch (page) {
-                    case 'posts':      return '/src/pages/posts/posts-page.html';
-                    case 'post':       return '/src/pages/post/post-page.html';
-                    case 'new':        return '/src/pages/new-post/new-post-page.html';
-                    case 'user':       return '/src/pages/user/user-page.html';
-                    case 'login':      return '/src/pages/login-register/login-register-page.html';
-                    case 'register':   return '/src/pages/login-register/login-register-page.html';
-                    case 'feedback':   return '/src/pages/feedback/feedback-page.html';
-                    case 'admin':      return '/src/pages/admin/admin-page.html';
-                    case 'test':       return '/nb/src/pages/test/test-page.html';
-                    case 'index.html':  return '/src/pages/test/test-page.html';
-                    case 'messages':   return '/src/pages/messages/messages-page.html';
+                    case 'posts':       p = '/src/pages/posts/posts-page.html';
+                    case 'post':        p = '/src/pages/post/post-page.html';
+                    case 'new':         p = '/src/pages/new-post/new-post-page.html';
+                    case 'user':        p = '/src/pages/user/user-page.html';
+                    case 'login':       p = '/src/pages/login-register/login-register-page.html';
+                    case 'register':    p = '/src/pages/login-register/login-register-page.html';
+                    case 'feedback':    p = '/src/pages/feedback/feedback-page.html';
+                    case 'admin':       p = '/src/pages/admin/admin-page.html';
+                    case 'test':        p = '/src/pages/test/test-page.html';
+                    case 'index.html':  p = '/src/pages/test/test-page.html';
+                    case 'messages':    p = '/src/pages/messages/messages-page.html';
                 }
+                if(document.location.hostname == 'localhost'){
+                    return p;
+                }else{
+                    return '/nb/'+p;
+                }
+
             },
 
             loginRegister: function(e, data) {
