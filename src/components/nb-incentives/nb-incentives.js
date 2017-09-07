@@ -179,7 +179,7 @@ Polymer({
         //this.$.location.hide();
       //}
 
-      this.map.setCenter({lat: this.latitude, lng: this.longitude});
+      //this.map.setCenter({lat: this.latitude, lng: this.longitude});
       this.initialize();
 
       //this.$.energy.generateRequest();
@@ -288,6 +288,7 @@ Polymer({
     this.map = new google.maps.Map(this.$.mapDiv, mapOptions);
     this.geocoder = new google.maps.Geocoder;
     this.infowindow = new google.maps.InfoWindow;
+    this.mapInitialized = true;
   },
 
 
@@ -296,7 +297,7 @@ Polymer({
     //var input = document.getElementById('latlng').value;
     //var latlngStr = input.split(',', 2);
     var latlng = {lat: parseFloat(this.latitude), lng: parseFloat(this.longitude)};
-    self.geocoder.geocode({'location': latlng}, function(results, status) {
+    this.geocoder.geocode({'location': latlng}, function(results, status) {
       if (status === 'OK') {
         if (results[0]) {
           //self.map.setZoom(11);
@@ -342,6 +343,7 @@ Polymer({
 
 
     if(!this.mapInitialized){
+        this.initMap();
       if(!this.latitude && !this.longitude){
         this.codeAddress();
         //console.log('codeAddress');
