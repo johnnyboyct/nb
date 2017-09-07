@@ -147,7 +147,83 @@ Polymer({
   created: function() {
     //console.log('created');
   },
+  attached: function(){
+      var intro = introJs();
 
+// intro.onbeforechange(function () {
+//   // if (this._currentStep === 2) {
+//   //   alert('You cannot continue! :P')
+//   //   return false;
+//   // }
+// });
+   intro.setOptions({
+     steps: [
+       {
+         intro: "Welcome to New Britain Energy Tools!"
+       },
+       {
+         element: this.$.step1,
+         intro: "This section will help you setup your inputs. These will help us help you."
+       },
+       {
+         element: this.$.step2,
+         intro: "This section will display your address and help measure your home.",
+         position: 'right'
+       },
+       {
+         element: this.$.step3,
+         intro: 'These items will help you to locate yourself and then show your pricing information.',
+         position: 'left'
+       },
+       {
+         element: this.$.step4,
+         intro: "Location is automatically detected, but if you declined or it didnt work, enter your address here.",
+         position: 'bottom'
+       },
+       {
+         element: this.$.step5,
+         intro: 'Once your location information has been set, and you have located and drawn your roof, this section will show the results.'
+     },
+     {
+       element: this.$.step6,
+       intro: 'These buttons help you control the application.',
+       position: 'left'
+     },
+     {
+       element: this.$.step7,
+       intro: "This step allows you to set advanced options.",
+       position: 'bottom'
+     },
+     {
+       element: this.$.step8,
+       intro: 'If everything goes well, this will show you your results!'
+     }
+     ]
+   });
+
+   intro.setOptions({
+         hints: [
+           {
+             element: this.$.step1,
+             hint: "This is a tooltip.",
+             hintPosition: 'top-middle'
+           },
+           {
+             element: this.$.step2,
+             hint: 'More features, more fun.',
+             position: 'left'
+           },
+           {
+             element: this.$.step3,
+             hint: "<b>Another</b> step.",
+             hintPosition: 'top-middle'
+           }
+         ]
+       });
+   intro.addHints();
+   intro.start();
+     //introJs().start();
+ },
   /**
    * Called after property values are set and local DOM
    * is initialized. Use for one-time configuration of your
@@ -160,6 +236,8 @@ Polymer({
     // });
     ////console.log(this);
     this.showErrorToast('ready');
+
+
   },
 
   _mapsLoaded: function() {
@@ -354,7 +432,7 @@ Polymer({
   }
 
     this.addButtons(this.map);
-    //this.drawEditablePolygon(this.map);
+    this.drawEditablePolygon(this.map);
     this.mapInitialized = true;
   },
   addButtons: function(map) {

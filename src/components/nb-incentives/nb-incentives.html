@@ -1,8 +1,8 @@
 
 
 
-
-
+<link data-require="intro.js@2.3.0" data-semver="2.3.0" rel="stylesheet" href="../../../bower_components/intro.js/introjs.css" />
+<script data-require="intro.js@2.3.0" data-semver="2.3.0" src="../../../bower_components/intro.js/intro.js"></script>
 
 
 <custom-style>
@@ -102,22 +102,21 @@ Key                              | Description                            | Usag
 
 		<div class="horizontal layout" style="height:100%">
 
-			<div class="flex-1">
+			<div class="flex-1" id="step1" data-hint="This is a tooltip!" data-hintPosition="top-middle" data-position="bottom-right-aligned">
 
 
 
 
 
-
-				<paper-listbox>
-					<paper-item on-click="toggleSection" data-section="location">
+				<paper-listbox id="step3">
+					<paper-item on-click="toggleSection" data-section="location" id="step4">
 
 						<paper-icon-item  data-section="location">
 							<iron-icon icon="nb-icons:my-location" slot="item-icon"></iron-icon>
 							Location
 						</paper-icon-item>
 					</paper-item>
-					<paper-item  on-click="toggleSection"  data-section="response">
+					<paper-item  on-click="toggleSection"  data-section="response" id="step5">
 						<paper-icon-item data-section="response">
 							<iron-icon icon="nb-icons:attach-money" slot="item-icon"></iron-icon>
 							Cost
@@ -148,17 +147,19 @@ Key                              | Description                            | Usag
 							</iron-form>
 						</template>
 						<br><br>
+						<div id="step6">
 						<template is="dom-if" if="{{!mapInitialized}}">
 							<paper-button raised on-tap="initialize" id="update_address">Update Address</paper-button>
 						</template>
 						<template is="dom-if" if="{{mapInitialized}}">
 							<paper-button raised on-tap="_calculateValue" id="calculate">Calculate</paper-button>
 						</template>
+</div>
 						<br>
 
 
 						<paper-listbox>
-								<paper-item on-click="toggleSection" data-section="advanced">
+								<paper-item on-click="toggleSection" data-section="advanced" id="step7">
 									Show / Hide Advanced Fields</a>
 								</paper-item>
 						</paper-listbox>
@@ -193,8 +194,8 @@ Key                              | Description                            | Usag
 
 					</div>
 				</iron-collapse>
-
-				<iron-collapse id="response">
+				<div id="step8">
+				<iron-collapse id="response" >
 					<div>
 						<template is="dom-if" if="{{gotAPIResponse}}">
 
@@ -204,13 +205,13 @@ Key                              | Description                            | Usag
 						</template>
 					</div>
 				</iron-collapse>
-
+			</div>
 
 
 
 			</div>
 
-			<div class="flex-3">
+			<div class="flex-3" id="step2">
 
 				<div class="thumbnail">
 					<div style="width: 100%; height: 500px;" id="mapDiv"></div>

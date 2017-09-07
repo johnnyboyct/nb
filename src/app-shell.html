@@ -41,11 +41,15 @@
 <link rel="import" href="../bower_components/screen-env/screen-env.html">
 <link rel="import" href="../bower_components/confirm-dialog/confirm-dialog.html">
 <link rel="import" href="../bower_components/jquery/dist/jquery.js">
-
+<link rel="import" href="../bower_components/iron-a11y-keys/iron-a11y-keys.html">
+<link rel="import" href="../bower_components/iron-iconset-svg/iron-iconset-svg.html">
+<link rel="import" href="../bower_components/app-storage/app-localstorage/app-localstorage-document.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 
 
 <link rel="import" href="header.html">
 <link rel="import" href="app-firebase.html">
+
 <link rel="import" href="components/auth-loader.html">
 <link rel="import" href="components/geo-location/geo-location.html">
 <link rel="import" href="components/app-logo.html">
@@ -53,6 +57,8 @@
 <link rel="import" href="components/nb-incentives/nb-incentives.html">
 <link rel="import" href="components/codelabs-card.html">
 <link rel="import" href="components/difficulty-indicator.html">
+
+
 <link rel="import" href="styles/nb-icons.html">
 
 <dom-module id="app-shell">
@@ -424,7 +430,7 @@
                     return p;
                 }else{
                     return '/nb'+p;
-                    
+
                 }
 
             },
