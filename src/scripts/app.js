@@ -6,11 +6,11 @@
 /*
  * Categorical logging filters
  */
-var DB = false;
-var AUTH = false;
-var ROUTE = false;
-var GEOFIRE = false;
-var POSTS = false;
+var DB = true;
+var AUTH = true;
+var ROUTE = true;
+var GEOFIRE = true;
+var POSTS = true;
 
 function fire(context, name, data, options) {
   options = options || {};
@@ -37,7 +37,7 @@ function goBack() {
       }
     }
   }
-  redirect('/nb/test');
+  redirect('/test');
 }
 
 /*

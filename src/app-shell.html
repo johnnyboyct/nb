@@ -226,7 +226,7 @@
 
         <app-route
                 route="[[route]]"
-                pattern="/:page"
+                pattern="/nb/:page"
                 data="{{routeData}}"
                 tail="{{subroute}}">
         </app-route>
@@ -247,7 +247,7 @@
                 </app-toolbar>
                 <paper-listbox selected="[[routeData.page]]" attr-for-selected="name" role="navigation">
                     <paper-item name="posts">
-                        <a plain class="flex" href="/test">Posts</a>
+                        <a plain class="flex" href="/nb/test">Posts</a>
                     </paper-item>
                     <paper-item name="new">
                         <a plain class="flex" href="/new">New</a>
