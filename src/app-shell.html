@@ -46,6 +46,8 @@
 <link rel="import" href="../bower_components/app-storage/app-localstorage/app-localstorage-document.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/paper-tooltip/paper-tooltip.html">
+<link rel="import" href="../bower_components/fortune-cookie/fortune-cookie.html">
+
 
 <link rel="import" href="header.html">
 <link rel="import" href="app-firebase.html">
@@ -211,11 +213,6 @@
                 auth="{{auth}}">
         </auth-loader>
 
-        <firebase-messaging
-                id="messaging"
-                token="{{messagingToken}}"
-                on-message="_handleCloudMessage">
-        </firebase-messaging>
 
         <app-notifications id="notifications"></app-notifications>
 
@@ -285,7 +282,9 @@
             <!-- Main toolbar -->
             <app-header-layout>
 
-                <app-header condenses fixed class="main-header" id="page-header" slot="header"
+                <app-header
+                hidden$="[[hideFrame]]"
+                condenses fixed class="main-header" id="page-header" slot="header"
                             effects="waterfall resize-snapped-title fade-background"
                             effects-config='{"resize-snapped-title": {"startsAt": 0.8, "duration": "100ms"}, "fade-background": {"startsAt": 0.8, "endsAt": 0.9}}'>
                     <app-toolbar>
@@ -371,6 +370,10 @@
                 _footerLink: {
                     type: String,
                     value: 'https://github.com/johnnyboyct/nb'
+                },
+                hideFrame:{
+                    type: Boolean,
+                    value: false
                 }
             },
 
@@ -381,8 +384,18 @@
             ],
             ready: function() {
                 //redirect('test');
+                console.log('ready');
+                if(this.inIframe()){
+                    this.hideFrame = true;
+                }
             },
-
+            inIframe: function() {
+                try {
+                    return window.self !== window.top;
+                } catch (e) {
+                    return true;
+                }
+            },
             _onFirebaseAppChanged: function(app, old) {
                 if (app) {
                     LOG && !old && log.d('Firebase app ready');

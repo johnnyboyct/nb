@@ -1,8 +1,8 @@
 {
-  "name": "app-starter",
-  "description": "A starting point for using Polymer, Firebase, Geofire, and username/provider logins.",
+  "name": "nb-energy",
+  "description": "Tools to help New Britain Connecicut residents get energy information.",
   "authors": [
-    "Jacob Phillips <jifalops@gmail.com> (https://github.com/jifalops)"
+    "John Marczak <johnnyboyct@yahoo.com> (https://github.com/johnnyboyct)"
   ],
   "main": "index.html",
   "license": "Apache",
@@ -61,7 +61,8 @@
     "paper-divider": "^1.0.0",
     "iron-a11y-keys": "^2.0.0",
     "iron-iconset-svg": "^2.1.0",
-    "intro.js": "^2.7.0"
+    "intro.js": "^2.7.0",
+    "fortune-cookie": "^2.0.2"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",

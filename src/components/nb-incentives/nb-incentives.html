@@ -89,6 +89,7 @@ Key                              | Description                            | Usag
 <dom-module id="nb-incentives">
 
 	<template>
+		<tk-loading-backdrop id="loading"></tk-loading-backdrop>
 
 		<style include="nb-incentives-styles"></style>
 		<style is="custom-style" include="paper-item-shared-styles"></style>
@@ -116,7 +117,53 @@ Key                              | Description                            | Usag
 		handle-as="json"
 		debounce-duration="300"
 		last-response="{{companies}}"></iron-ajax>
+		<geo-location latitude="{{latitude}}" longitude="{{longitude}}"
+		id="geo" geo-response="_geoResponse" geo-error="_geoError"></geo-location>
 
+		<fortune-cookie
+		auto-save="true"
+		id="introCookie"
+	      name="introCookie"
+	      value="{{introCookie}}"
+		  on-handle-value-as="Object"
+	      on-fortune-cookie-expired="_onCookieExpired"
+	      on-fortune-cookie-load-empty="_onLoadCookieEmpty">
+	    </fortune-cookie>
+
+
+		<div class="horizontal layout" style="height:100%">
+			<div class="flex-12" id="intro">
+				<paper-card id="intro-card" elevation="2">
+					<div class="header vertical layout">
+					  <div class="horizontal justified layout">
+						<h2 class="heading">Instructions</h2>
+						<div class="light card-category">
+
+							<paper-icon-button toggles on-click="toggleSection" data-section="instructions" icon="nb-icons:expand-less" title="expand"></paper-icon-button>
+						</div>
+					  </div>
+
+					</div>
+					<div class="card-content">
+						<iron-collapse id="instructions">
+						<p>
+							Welcome to the New Britain Energy Tool. Click the interactive tour button or try yourself!
+						</p>
+
+							<p>
+								<paper-button raised on-tap="_startIntro" id="tour">Start Interactive Tour </paper-button>
+
+
+							</p>
+						</iron-collapse>
+
+					<p>
+					</p>
+			</div>
+		</div>
+	</paper-card>
+		</div>
+		</div>
 
 		<div class="horizontal layout" style="height:100%">
 
@@ -157,7 +204,7 @@ Key                              | Description                            | Usag
 							<div>
 								<template is="dom-if" if="{{!geoResponseError}}">
 									Your browser located you.
-									<geo-location latitude="{{latitude}}" longitude="{{longitude}}" id="geo" geo-response="_geoResponse" geo-error="_geoError"></geo-location>
+
 									<ul>
 										<li>Latitude: [[latitude]]</li>
 										<li>Longitude: [[longitude]]</li>
@@ -177,7 +224,7 @@ Key                              | Description                            | Usag
 								<br><br>
 								<div id="step6">
 									<template is="dom-if" if="{{mapInitialized}}">
-										<paper-button raised on-tap="initialize" id="update_address">Update Address</paper-button>
+										<paper-button raised on-tap="_updateAddress" id="update_address">Update Address</paper-button>
 									</template>
 									<template is="dom-if" if="{{mapInitialized}}">
 										<paper-button raised on-tap="_calculateValue" id="calculate">Calculate</paper-button>
@@ -187,8 +234,9 @@ Key                              | Description                            | Usag
 
 
 								<paper-listbox>
-									<paper-item on-click="toggleSection" data-section="advanced" id="step7">
-										Show / Hide Advanced Fields</a>
+									<paper-item >
+										<paper-button toggles raised class="green" on-click="toggleSection" data-section="advanced" id="step7">
+										Show / Hide Advanced Fields</paper-button>
 									</paper-item>
 								</paper-listbox>
 								<iron-collapse id="advanced">
