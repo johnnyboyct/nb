@@ -1,7 +1,6 @@
-
-
-
 <link data-require="intro.js@2.3.0" data-semver="2.3.0" rel="stylesheet" href="../../../bower_components/intro.js/introjs.css" />
+
+
 <script data-require="intro.js@2.3.0" data-semver="2.3.0" src="../../../bower_components/intro.js/intro.js"></script>
 
 
@@ -11,20 +10,24 @@
 		display: block;
 		@apply --paper-font-common-base;
 	}
+
 	.flex-horizontal-with-ratios {
 		@apply --layout-horizontal;
 	}
 
 	.flexchild {
 		@apply --layout-flex;
+		padding: 10px;
 	}
 
 	.flex2child {
 		@apply --layout-flex-2;
+		padding: 10px;
 	}
 
 	.flex3child {
 		@apply --layout-flex-3;
+		padding: 10px;
 	}
 
 	.container {
@@ -39,12 +42,16 @@
 		background-color: white;
 		min-height: 20px;
 	}
-	codelabs-card{
-		height:410px;
+
+	codelabs-card {
+		height: 410px;
 	}
-	#mapcontrols{
+
+	#mapcontrols {
 		display: block;
 	}
+
+
 	</style>
 </custom-style>
 <!--
@@ -102,117 +109,136 @@ Key                              | Description                            | Usag
 
 		<div class="horizontal layout" style="height:100%">
 
-			<div class="flex-1" id="step1" data-hint="This is a tooltip!" data-hintPosition="top-middle" data-position="bottom-right-aligned">
+			<div class="flex-1" id="step1" >
+				<paper-card  elevation="2">
+					<div class="header vertical layout">
+					  <div class="horizontal end-justified layout">
+						<div class="light card-category"></div>
+					  </div>
+					  <h2 class="heading">Location Information</h2>
+					</div>
+					<div class="card-content">
 
 
 
+						<paper-tooltip for="step4" position="top">
+							Your location information
+						</paper-tooltip>
 
+						<paper-listbox id="step3">
+							<paper-item on-click="toggleSection" data-section="location" id="step4">
 
-				<paper-listbox id="step3">
-					<paper-item on-click="toggleSection" data-section="location" id="step4">
-
-						<paper-icon-item  data-section="location">
-							<iron-icon icon="nb-icons:my-location" slot="item-icon"></iron-icon>
-							Location
-						</paper-icon-item>
-					</paper-item>
-					<paper-item  on-click="toggleSection"  data-section="response" id="step5">
-						<paper-icon-item data-section="response">
-							<iron-icon icon="nb-icons:attach-money" slot="item-icon"></iron-icon>
-							Cost
-						</paper-icon-item>
-					</paper-item>
-				</paper-listbox>
-
-
-				<iron-collapse id="location">
-					<div>
-						<template is="dom-if" if="{{!geoResponseError}}">
-							Your browser located you.
-							<geo-location latitude="{{latitude}}" longitude="{{longitude}}" id="geo" geo-response="_geoResponse" geo-error="_geoError"></geo-location>
-							<ul>
-								<li>Latitude: [[latitude]]</li>
-								<li>Longitude: [[longitude]]</li>
-							</ul>
-						</template>
-						<template is="dom-if" if="{{geoResponseError}}">
-							Cannot determine location
-
-
-
-							<iron-form id="form1">
-								<paper-input type="text" name="address" id="addressInput" required label="Address" value="{{address}}">
-									<iron-icon icon="mail" slot="prefix"></iron-icon>
-								</paper-input>
-							</iron-form>
-						</template>
-						<br><br>
-						<div id="step6">
-						<template is="dom-if" if="{{!mapInitialized}}">
-							<paper-button raised on-tap="initialize" id="update_address">Update Address</paper-button>
-						</template>
-						<template is="dom-if" if="{{mapInitialized}}">
-							<paper-button raised on-tap="_calculateValue" id="calculate">Calculate</paper-button>
-						</template>
-</div>
-						<br>
-
-
-						<paper-listbox>
-								<paper-item on-click="toggleSection" data-section="advanced" id="step7">
-									Show / Hide Advanced Fields</a>
-								</paper-item>
+								<paper-icon-item  data-section="location">
+									<iron-icon icon="nb-icons:my-location" slot="item-icon"></iron-icon>
+									Location
+								</paper-icon-item>
+							</paper-item>
+							<paper-item  on-click="toggleSection"  data-section="response" id="step5">
+								<paper-icon-item data-section="response">
+									<iron-icon icon="nb-icons:attach-money" slot="item-icon"></iron-icon>
+									Cost
+								</paper-icon-item>
+							</paper-item>
 						</paper-listbox>
-						<iron-collapse id="advanced">
-						<div id="advanced">
-							<div id='mapcontrols'>
-								<paper-button raised id="btnTerrain" value="Terrain">Terrain</paper-button>
-								<paper-button raised id="btnRoadmap" value="Roadmap">Roadmap</paper-button>
-								<paper-button raised id="btnSatellite" value="Satellite">Satellite</paper-button>
-								<paper-button raised id="btnHybrid" value="Hybrid">Hybrid</paper-button>
-								<paper-button raised id="btnCompass" value="Compass">Compass</paper-button>
-								<paper-button raised id="btnInspector" value="Inspect Roof"> Inspect Roof</paper-button>
-							</div>
 
-							<br /> INPUTS:
-							<br />
-							<div class="form-group" style="margin-right: 20px;">
-								Orientation of the roof:
-								<paper-input type="text" name="azimuth" id="azimuth" required label="azimuth" value="{{azimuth}}"></paper-input>
+
+						<iron-collapse id="location">
+							<div>
+								<template is="dom-if" if="{{!geoResponseError}}">
+									Your browser located you.
+									<geo-location latitude="{{latitude}}" longitude="{{longitude}}" id="geo" geo-response="_geoResponse" geo-error="_geoError"></geo-location>
+									<ul>
+										<li>Latitude: [[latitude]]</li>
+										<li>Longitude: [[longitude]]</li>
+									</ul>
+								</template>
+								<template is="dom-if" if="{{geoResponseError}}">
+									Cannot determine location
+								</template>
+
+
+								<iron-form id="form1">
+									<paper-input type="text" name="address" id="addressInput" required label="Address" value="{{address}}">
+										<iron-icon icon="mail" slot="prefix"></iron-icon>
+									</paper-input>
+								</iron-form>
+
+								<br><br>
+								<div id="step6">
+									<template is="dom-if" if="{{!mapInitialized}}">
+										<paper-button raised on-tap="initialize" id="update_address">Update Address</paper-button>
+									</template>
+									<template is="dom-if" if="{{mapInitialized}}">
+										<paper-button raised on-tap="_calculateValue" id="calculate">Calculate</paper-button>
+									</template>
+								</div>
+								<br>
+
+
+								<paper-listbox>
+									<paper-item on-click="toggleSection" data-section="advanced" id="step7">
+										Show / Hide Advanced Fields</a>
+									</paper-item>
+								</paper-listbox>
+								<iron-collapse id="advanced">
+									<div id="advanced">
+										<div id='mapcontrols'>
+											<paper-button raised id="btnTerrain" value="Terrain">Terrain</paper-button>
+											<paper-button raised id="btnRoadmap" value="Roadmap">Roadmap</paper-button>
+											<paper-button raised id="btnSatellite" value="Satellite">Satellite</paper-button>
+											<paper-button raised id="btnHybrid" value="Hybrid">Hybrid</paper-button>
+											<paper-button raised id="btnCompass" value="Compass">Compass</paper-button>
+											<paper-button raised id="btnInspector" value="Inspect Roof"> Inspect Roof</paper-button>
+										</div>
+
+										<br /> INPUTS:
+										<br />
+										<div class="form-group" style="margin-right: 20px;">
+											Orientation of the roof:
+											<paper-input type="text" name="azimuth" id="azimuth" required label="azimuth" value="{{azimuth}}"></paper-input>
+										</div>
+										<div class="form-group" style="margin-right: 20px;">
+											<paper-input type="text" name="tilt" id="tilt" required label="Tilt" value="{{tilt}}"></paper-input>
+										</div>
+										<div class="form-group" style="margin-right: 20px;">
+											PPA Price:
+											<paper-input type="text" name="ppa" id="ppa" required label="ppa" value="{{ppa}}"></paper-input>
+										</div>
+										<br><br>
+									</div>
+								</iron-collapse>
+								<div class="output"></div>
+
 							</div>
-							<div class="form-group" style="margin-right: 20px;">
-								<paper-input type="text" name="tilt" id="tilt" required label="Tilt" value="{{tilt}}"></paper-input>
-							</div>
-							<div class="form-group" style="margin-right: 20px;">
-								PPA Price:
-								<paper-input type="text" name="ppa" id="ppa" required label="ppa" value="{{ppa}}"></paper-input>
-							</div>
-							<br><br>
+						</iron-collapse>
+						<div id="step8">
+							<iron-collapse id="response">
+
+									<template is="dom-if" if="{{gotAPIResponse}}">
+
+										<codelabs-card heading="Estimated Electricity Production"
+										card-data="[[electricityAPI.apiResponse]]"
+										></codelabs-card>
+									</template>
+
+
+							</iron-collapse>
 						</div>
-					</iron-collapse>
-						<div class="output"></div>
-
 					</div>
-				</iron-collapse>
-				<div id="step8">
-				<iron-collapse id="response" >
-					<div>
-						<template is="dom-if" if="{{gotAPIResponse}}">
-
-							<codelabs-card heading="Estimated Electricity Production"
-								card-data="[[electricityAPI.apiResponse]]"
-							></codelabs-card>
-						</template>
-					</div>
-				</iron-collapse>
-			</div>
-
+				</paper-card>
 
 
 			</div>
 
 			<div class="flex-3" id="step2">
-
+				<paper-card  elevation="2">
+					<div class="header vertical layout">
+					  <div class="horizontal end-justified layout">
+						<div class="light card-category"></div>
+					  </div>
+					  <h2 class="heading">Map Information</h2>
+					</div>
+					<div class="card-content">
 				<div class="thumbnail">
 					<div style="width: 100%; height: 500px;" id="mapDiv"></div>
 					<div id="mapDiv45"></div>
@@ -229,6 +255,8 @@ Key                              | Description                            | Usag
 					<div id="results3"></div>
 				</div>
 			</div>
+		</div>
+	</paper-card>
 		</div>
 	</template>
 

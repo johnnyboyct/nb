@@ -220,7 +220,7 @@ Polymer({
            }
          ]
        });
-   intro.addHints();
+   //intro.addHints();
    intro.start();
      //introJs().start();
  },
@@ -307,7 +307,7 @@ Polymer({
 
       var energyGenerated = data.outputs.ac_annual;
       var lease = energyGenerated * 0.15 * this.ppa;
-
+      this.electricityAPI.apiResponse.solrad_annual = data.outputs.solrad_annual;
 
       this.electricityAPI.apiResponse.energyGenerated = energyGenerated.toFixed(2);
       this.electricityAPI.apiResponse.lease =lease.toFixed(2);
