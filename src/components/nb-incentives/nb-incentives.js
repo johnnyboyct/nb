@@ -258,9 +258,7 @@ Polymer({
       //}
 
       //this.map.setCenter({lat: this.latitude, lng: this.longitude});
-      if(!this.mapInitialized){
-          this.initialize();
-    }
+      this.initialize();
 
       //this.$.energy.generateRequest();
       //this.prepAJAXAndSend();
@@ -389,7 +387,7 @@ Polymer({
           self.infowindow.setContent(results[0].formatted_address);
           //self.infowindow.open(self.map, marker);
           self.map.setCenter(results[0].geometry.location);
-          //self.drawEditablePolygon(self.map);
+          self.drawEditablePolygon(self.map);
         } else {
           //console.log('No results found');
         }
@@ -410,7 +408,7 @@ Polymer({
         // });
         self.latitude = results[0].geometry.location.lat();
         self.longitude = results[0].geometry.location.lng();
-        //self.drawEditablePolygon(self.map);
+        self.drawEditablePolygon(self.map);
       } else {
         //console.log('Geocode was not successful for the following reason: ' + status);
       }
@@ -479,6 +477,7 @@ Polymer({
           new google.maps.LatLng(self.lat_adjacent, self.longitude),
           new google.maps.LatLng(self.lat_adjacent, self.lon_adjacent),
         ];
+        if(!self.natureArea){
         self.natureArea = new google.maps.Polygon({
           path: self.natureCoords,
           strokeColor: '#FFFFFF',
@@ -490,7 +489,7 @@ Polymer({
           draggable: true,
         });
         self.natureArea.setMap(map);
-
+}
       }
     });
   },
