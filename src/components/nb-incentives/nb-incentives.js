@@ -61,6 +61,17 @@ Polymer({
         apiResponse:{}
       }
     },
+    companies: {
+      type: Object,
+      reflectToAttribute: true,
+      notify: true,
+      value: {
+        baseUrl: "https://data.ct.gov/resource/jh52-2msw.json?city=New%20Britain&state=CT&active=1&$where=credentialtype%20in(%27HIC%27,%27HIS%27)",
+        gotResponse: false,
+        apiResponse:{}
+      }
+    },
+
     gotAPIResponse:{
       type:Boolean,
       value: false,
@@ -288,6 +299,7 @@ Polymer({
     this.electricityAPI.url = this.electricityAPI.baseUrl + "?api_key=" + this.electricityAPI.key + "&lat=" + this.latitude + "&lon=" + this.longitude + "&timeframe=monthly&system_capacity=" + this.size_premimum + "&module_type=1&losses=14&array_type=1&tilt=" + this.tilt + "&azimuth=" + this.azimuth ;
     this.$.energy.url = this.electricityAPI.url;
     this.$.energy.generateRequest();
+    this.$.companies.generateRequest();
 
   },
   _handleAjaxLoading: function () {
@@ -304,7 +316,7 @@ Polymer({
     this.$.location.hide();
     //console.log(response);
 
-
+if(data.outputs){
       var energyGenerated = data.outputs.ac_annual;
       var lease = energyGenerated * 0.15 * this.ppa;
       this.electricityAPI.apiResponse.solrad_annual = data.outputs.solrad_annual;
@@ -313,7 +325,10 @@ Polymer({
       this.electricityAPI.apiResponse.lease =lease.toFixed(2);
       this.electricityAPI.apiResponse.address =this.address;
       this.gotAPIResponse = true;
-
+}else{
+    //console.log(data);
+    this.companies.apiResponse = data;
+}
     //console.log('ajax',this.$[id]);
   },
 

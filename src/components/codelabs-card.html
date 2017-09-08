@@ -9,16 +9,26 @@
 
         <style include="iron-flex iron-flex-alignment">
         :host {
-            display: inline-block;
-
+            display:flex;
+            width:100%;
             --category-secondary: #310824;
         }
+
+                .listItem {
+                  @apply --layout-horizontal;
+
+                  margin: 16px 16px 0 16px;
+                  padding: 20px;
+                  border-radius: 8px;
+                  background-color: white;
+                  border: 1px solid #ddd;
+                }
 
         paper-card {
             font-family: 'Ubuntu', Helvetica, Arial;
             height: 100%;
             position: relative;
-            margin-right: 20px;
+                width: 100%;
 
             --paper-card-content: {
                 padding: 0;
@@ -29,7 +39,19 @@
             color: var(--primary-text-color);
             overflow: hidden;
         }
+        .primary {
+          font-size: 16px;
+          font-weight: bold;
+        }
 
+        .secondary {
+          font-size: 14px;
+          margin: 10px 0;
+        }
+        .third {
+          font-size: 14px;
+          margin: 10px 0;
+        }
         .header {
             /*background: url('https://assets.ubuntu.com/v1/a88aa78c-card_background.png') no-repeat right bottom;
             background-size: cover;*/
@@ -110,6 +132,9 @@
         paper-divider{
             margin-top: 5px;
             margin-bottom: 5px;
+        }
+        iron-list {
+          height: 50vh; /* don't use % values unless the parent element is sized. */
         }
 
         </style>
