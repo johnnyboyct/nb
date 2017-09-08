@@ -258,7 +258,9 @@ Polymer({
       //}
 
       //this.map.setCenter({lat: this.latitude, lng: this.longitude});
-      this.initialize();
+      if(!this.mapInitialized){
+          this.initialize();
+    }
 
       //this.$.energy.generateRequest();
       //this.prepAJAXAndSend();
@@ -387,7 +389,7 @@ Polymer({
           self.infowindow.setContent(results[0].formatted_address);
           //self.infowindow.open(self.map, marker);
           self.map.setCenter(results[0].geometry.location);
-          self.drawEditablePolygon(self.map);
+          //self.drawEditablePolygon(self.map);
         } else {
           //console.log('No results found');
         }
@@ -408,7 +410,7 @@ Polymer({
         // });
         self.latitude = results[0].geometry.location.lat();
         self.longitude = results[0].geometry.location.lng();
-        self.drawEditablePolygon(self.map);
+        //self.drawEditablePolygon(self.map);
       } else {
         //console.log('Geocode was not successful for the following reason: ' + status);
       }
