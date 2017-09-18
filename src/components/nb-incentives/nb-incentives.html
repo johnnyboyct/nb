@@ -103,10 +103,28 @@ Key                              | Description                            | Usag
 		on-error="_handleAjaxError"
 		on-response="_handleAjaxEventfunction"
 		loading-changed="_handleAjaxLoading"
-		url="https://developer.nrel.gov/api/energy_incentives/v2/dsire.json"
+		url="https://developer.nrel.gov/api/pvwatts/v5.json"
 		handle-as="json"
 		debounce-duration="300"
 		last-response="{{energy}}"></iron-ajax>
+
+		<iron-ajax id="cost"
+		on-error="_handleAjaxError"
+		on-response="_handleAjaxEventfunction"
+		loading-changed="_handleAjaxLoading"
+		url="https://developer.nrel.gov/api/solar/open_pv/installs/summaries"
+		handle-as="json"
+		debounce-duration="300"
+		last-response="{{cost}}"></iron-ajax>
+
+		<iron-ajax id="incentives"
+		on-error="_handleAjaxError"
+		on-response="_handleAjaxEventfunction"
+		loading-changed="_handleAjaxLoading"
+		url="https://developer.nrel.gov/api/energy_incentives/v2/dsire.json"
+		handle-as="json"
+		debounce-duration="300"
+		last-response="{{incentives}}"></iron-ajax>
 
 
 		<iron-ajax id="companies"
@@ -286,6 +304,14 @@ Key                              | Description                            | Usag
 										></codelabs-card2>
 									</template>
 
+
+
+									<template is="dom-if" if="{{gotAPIResponse}}">
+
+										<codelabs-card3 heading="Costs"
+										card-data="[[cost.result]]"
+										></codelabs-card3>
+									</template>
 							</iron-collapse>
 						</div>
 					</div>

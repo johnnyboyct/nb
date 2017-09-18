@@ -37,6 +37,10 @@ Polymer({
             type: Array,
             value: ['06050', '06051', '06052', '06053']
         },
+        county: {
+            type: String,
+            value: 'Hartford'
+        },
         energy: {
             type: Array,
             reflectToAttribute: true,
@@ -67,6 +71,26 @@ Polymer({
             notify: true,
             value: {
                 baseUrl: "https://data.ct.gov/resource/jh52-2msw.json?city=New%20Britain&state=CT&active=1&$where=credentialtype%20in(%27HIC%27,%27HIS%27)",
+                gotResponse: false,
+                apiResponse:{}
+            }
+        },
+        cost:{
+            type: Object,
+            reflectToAttribute: true,
+            notify: true,
+            value: {
+                baseUrl:"https://developer.nrel.gov/api/solar/open_pv/installs/summaries",
+                gotResponse: false,
+                apiResponse:{}
+            }
+        },
+        incentives:{
+            type: Object,
+            reflectToAttribute: true,
+            notify: true,
+            value: {
+                baseUrl:"https://developer.nrel.gov/api/energy-incentives/v1.json",
                 gotResponse: false,
                 apiResponse:{}
             }
@@ -257,7 +281,8 @@ Polymer({
     },
 
     _mapsLoaded: function() {
-        this.initMap();
+        console.log('maps loaded');
+        this.initialize(this.initMap);
     },
 
 
@@ -270,7 +295,7 @@ Polymer({
             //}
 
             //this.map.setCenter({lat: this.latitude, lng: this.longitude});
-            this.initialize();
+            this.initialize(this.initMap);
 
             //this.$.energy.generateRequest();
             //this.prepAJAXAndSend();
@@ -297,6 +322,16 @@ Polymer({
         this.electricityAPI.key = this.nrel_api_key;
         this.electricityAPI.url = this.electricityAPI.baseUrl + "?api_key=" + this.electricityAPI.key + "&lat=" + this.latitude + "&lon=" + this.longitude + "&timeframe=monthly&system_capacity=" + this.size_premimum + "&module_type=1&losses=14&array_type=1&tilt=" + this.tilt + "&azimuth=" + this.azimuth ;
         this.$.energy.url = this.electricityAPI.url;
+        var size = 70;
+        var minsize = size * 0.8;
+        var maxsize = size * 1.2;
+        this.$.cost.url = this.cost.baseUrl + "?api_key=" + this.nrel_api_key + "&county=" + this.county + "&minsize=" + minsize+"&maxsize=" + maxsize;
+        this.$.incentives.url = this.incentives.baseUrl + "?api_key=" + this.nrel_api_key + "&address=" + this.address + "&incentive_types=solar_incentives";
+        this.$.incentives.generateRequest();
+
+
+        this.$.cost.generateRequest();
+
         this.$.energy.generateRequest();
         this.$.companies.generateRequest();
 
@@ -311,25 +346,29 @@ Polymer({
         var data = event.detail.response;
         //this.$[id].params.lat = this.latitude;
         //this.$[id].params.lon = this.longitude;
-        this.notifyPath(id);
-        this.$.response.show();
-        this.$.location.hide();
+
         //console.log(response);
 
-        if(data.outputs){
+        //if(typeof data.outputs != 'undefined' && typeof data.inputs.incentive_types != 'undefined'){
+        if(event.srcElement.id == 'energy'){
             var energyGenerated = data.outputs.ac_annual;
             var lease = energyGenerated * 0.15 * this.ppa;
             this.electricityAPI.apiResponse.solrad_annual = data.outputs.solrad_annual;
-
+            this.electricityAPI.apiResponse.ppa = this.ppa;
             this.electricityAPI.apiResponse.energyGenerated = energyGenerated.toFixed(2);
             this.electricityAPI.apiResponse.lease =lease.toFixed(2);
             this.electricityAPI.apiResponse.address =this.address;
             this.gotAPIResponse = true;
+        }else if(event.srcElement.id == 'incentives'){
+            this.incentives.apiResponse = data.outputs;
         }else{
             console.log(data);
             this.companies.apiResponse = data;
             this.gotAPIResponse = true;
         }
+        this.notifyPath(id);
+        this.$.response.show();
+        this.$.location.hide();
         //this.$.loading.close();
         //console.log('ajax',this.$[id]);
     },
@@ -376,7 +415,7 @@ Polymer({
 
     drawEditablePolygon: function() {
         var self = this;
-        geocoder = new google.maps.Geocoder();
+        self.geocoder = new google.maps.Geocoder();
         address = this.address;
         self.geocoder.geocode({
             'address': address,
@@ -421,8 +460,8 @@ Polymer({
         var self = this;
         //var input = document.getElementById('latlng').value;
         //var latlngStr = input.split(',', 2);
-        var latlng = {lat: parseFloat(this.latitude), lng: parseFloat(this.longitude)};
-        this.geocoder.geocode({'location': latlng}, function(results, status) {
+        var latlng = {lat: parseFloat(self.latitude), lng: parseFloat(self.longitude)};
+        self.geocoder.geocode({'location': latlng}, function(results, status) {
             if (status === 'OK') {
                 if (results[0]) {
                     //self.map.setZoom(11);
@@ -469,9 +508,9 @@ Polymer({
         //var geocoder = new google.maps.Geocoder();
 
 
-        if(!this.mapInitialized){
+        if(!this.mapInitialized && typeof google != 'undefined'){
             this.initMap();
-        }
+
         if(!this.latitude && !this.longitude){
             this.codeAddress();
             //console.log('codeAddress');
@@ -484,9 +523,10 @@ Polymer({
         this.addButtons(this.map);
         this.drawEditablePolygon();
         this.mapInitialized = true;
+}
     },
 
-    initMap: function() {
+    initMap: function(callback) {
         var mapOptions = {
             zoom: 40,
             disableDefaultUI: true,
@@ -508,6 +548,9 @@ Polymer({
         this.geocoder = new google.maps.Geocoder;
         this.infowindow = new google.maps.InfoWindow;
         this.mapInitialized = true;
+        if(typeof callback == 'function'){
+            callback();
+        }
     },
 
 

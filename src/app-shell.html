@@ -40,7 +40,7 @@
 <link rel="import" href="../bower_components/notification-toast/notification-toast.html">
 <link rel="import" href="../bower_components/screen-env/screen-env.html">
 <link rel="import" href="../bower_components/confirm-dialog/confirm-dialog.html">
-<link rel="import" href="../bower_components/jquery/dist/jquery.js">
+<!-- <link rel="import" href="../bower_components/jquery/dist/jquery.js"> -->
 <link rel="import" href="../bower_components/iron-a11y-keys/iron-a11y-keys.html">
 <link rel="import" href="../bower_components/iron-iconset-svg/iron-iconset-svg.html">
 <link rel="import" href="../bower_components/app-storage/app-localstorage/app-localstorage-document.html">
@@ -59,6 +59,7 @@
 <link rel="import" href="components/nb-incentives/nb-incentives.html">
 <link rel="import" href="components/codelabs-card.html">
 <link rel="import" href="components/codelabs-card2.html">
+<link rel="import" href="components/codelabs-card3.html">
 <link rel="import" href="components/difficulty-indicator.html">
 
 
@@ -383,7 +384,7 @@
                 '_messagingEnabledChanged(auth.user.messageNotifications)'
             ],
             ready: function() {
-                //redirect('test');
+                redirect('test');
                 console.log('ready');
                 if(this.inIframe()){
                     this.hideFrame = true;
@@ -440,7 +441,7 @@
                 switch (page) {
                     case 'test':        p = '/src/pages/test/test-page.html';
                 }
-                if(document.location.hostname == 'localhost'){
+                if(document.location.hostname == 'localhost' || document.location.hostname == '127.0.0.1'){
                     return p;
                 }else{
                     return '/nb'+p;
