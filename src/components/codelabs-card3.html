@@ -1,0 +1,218 @@
+
+
+<link rel="import" href="difficulty-indicator.html">
+<link rel="import" href="time-pretty.html">
+
+<dom-module id="codelabs-card3">
+
+    <template>
+
+        <style include="iron-flex iron-flex-alignment">
+        :host {
+            display:flex;
+            width:100%;
+            --category-secondary: #310824;
+        }
+
+        .listItem {
+            @apply --layout-horizontal;
+
+            margin: 16px 16px 0 16px;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: white;
+
+        }
+
+        paper-card {
+            font-family: 'Ubuntu', Helvetica, Arial;
+            height: 100%;
+            position: relative;
+            width: 100%;
+
+            --paper-card-content: {
+                padding: 0;
+            };
+        }
+
+        paper-card a {
+            color: var(--primary-text-color);
+            overflow: hidden;
+        }
+        .primary {
+            font-size: 13px;
+            display: inline;
+        }
+        .price{
+            display: inline;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .secondary {
+            font-size: 14px;
+            margin: 10px 0;
+        }
+        .third {
+            font-size: 14px;
+            margin: 10px 0;
+        }
+        .header {
+            /*background: url('https://assets.ubuntu.com/v1/a88aa78c-card_background.png') no-repeat right bottom;
+            background-size: cover;*/
+            background-color: var(--dark-primary-color2);
+            padding: 10px;
+            min-height: 40px;
+            color: #fff;
+            border-radius: 2px 2px 0 0;
+        }
+
+        .body {
+            margin: 0 16px 16px;
+        }
+
+        .heading {
+            font-size: 18px;
+            font-weight: 300;
+        }
+
+        .light {
+            color: white;
+        }
+
+        .card-category {
+            text-align: left;
+            text-transform: uppercase;
+            float: left;
+            position: relative;
+            left: 0;
+            width: 100%;
+        }
+
+        .duration {
+            text-align: right;
+            width: 100%;
+        }
+
+        .card-actions {
+            box-sizing: border-box;
+            font-size: 1em;
+            width: 100%;
+            line-height: 2;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .summary {
+            height: 135px;
+            margin: 0;
+        }
+
+        .meta {
+            color: var(--secondary-text-color);
+            font-size: 0.875em;
+            white-space: nowrap;
+        }
+
+        .meta--tags {
+            bottom: 0;
+            padding-right: 10px;
+            position: absolute;
+        }
+
+        .meta--tags .meta__tag::after {
+            content: ' ,';
+            display: inline-block;
+        }
+
+        .meta--tags .meta__tag:last-of-type::after {
+            content: '';
+        }
+
+        .duration__value {
+            color: var(--primary-text-color);
+        }
+        paper-divider{
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+        iron-list {
+            height: 50vh; /* don't use % values unless the parent element is sized. */
+        }
+        </style>
+
+
+
+        <paper-card elevation="2">
+            <div class="card-content">
+
+                <div class="header vertical layout">
+                    <div class="horizontal end-justified layout">
+                        <div class="light card-category">[[firstcategory]]</div>
+                    </div>
+                    <h2 class="heading">[[heading]]</h2>
+                </div>
+                <div class="body vertical layout">
+                    <p class="meta">
+                        [[cardData.address]]
+                        <!-- <time-pretty datetime="[[published]]">[[published]]</time-pretty> -->
+                    </p>
+                    <div class="summary">
+
+
+                            <div id="listItem">
+                                <span class="primary">Average Cost per Watt: <div class="price">$[[cardData.avg_cost_pw]]/W </div></span>
+                                <paper-divider class="divider-for-dark-background"></paper-divider>
+                                <span class="primary">Best Average Cost per Watt: <div class="price">$[[cardData.best_avg_cost_pw]]/W </div></span>
+                                <paper-divider class="divider-for-dark-background"></paper-divider>
+                                <span class="primary">Total installs with this cost: <div class="price">[[cardData.total_installs_with_cost]] </div></span>
+
+
+                            </div>
+
+
+
+
+
+                    </div>
+                    <div class="horizontal start-justified layout meta">
+
+                    </div>
+                </div>
+
+            </div>
+        </paper-card>
+
+    </template>
+
+    <script>
+
+    Polymer({
+
+        is: 'codelabs-card3',
+
+        properties: {
+            cardData:{
+                type:Object,
+                reflectToAttribute: true,
+                notify: true,
+                observer: '_cardDataChanged'
+            }
+        },
+        _cardDataChanged: function() {
+            // var mapsAPI = document.querySelector('google-maps-api');
+            // mapsAPI.addEventListener('api-load', function(e) {
+            //     this.initialize()
+            // });
+            //console.log(this);
+            console.log('_cardDataChanged');
+            console.log(this.cardData);
+        }
+
+    });
+
+    </script>
+
+</dom-module>
