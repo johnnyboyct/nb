@@ -3,7 +3,7 @@
 <link rel="import" href="difficulty-indicator.html">
 <link rel="import" href="time-pretty.html">
 
-<dom-module id="codelabs-card3">
+<dom-module id="energy-incentives">
 
     <template>
 
@@ -40,22 +40,17 @@
             overflow: hidden;
         }
         .primary {
-            font-size: 13px;
-            display: inline;
-        }
-        .price{
-            display: inline;
-            font-size: 16px;
-            font-weight: bold;
+          font-size: 16px;
+          font-weight: bold;
         }
 
         .secondary {
-            font-size: 14px;
-            margin: 10px 0;
+          font-size: 14px;
+          margin: 10px 0;
         }
         .third {
-            font-size: 14px;
-            margin: 10px 0;
+          font-size: 14px;
+          margin: 10px 0;
         }
         .header {
             /*background: url('https://assets.ubuntu.com/v1/a88aa78c-card_background.png') no-repeat right bottom;
@@ -156,21 +151,24 @@
                 </div>
                 <div class="body vertical layout">
                     <p class="meta">
-                        [[cardData.address]]
+                        [[cardData.outputs.utility_name]]
                         <!-- <time-pretty datetime="[[published]]">[[published]]</time-pretty> -->
                     </p>
                     <div class="summary">
 
 
-                            <div id="listItem">
-                                <span class="primary">Average Cost per Watt: <div class="price">$[[cardData.avg_cost_pw]]/W </div></span>
-                                <paper-divider class="divider-for-dark-background"></paper-divider>
-                                <span class="primary">Best Average Cost per Watt: <div class="price">$[[cardData.best_avg_cost_pw]]/W </div></span>
-                                <paper-divider class="divider-for-dark-background"></paper-divider>
-                                <span class="primary">Total installs with this cost: <div class="price">[[cardData.total_installs_with_cost]] </div></span>
+                        <iron-list items="[[cardData.outputs.solar_incentives]]">
+<template>
+                        <div id="listItem">
+                            <div class="primary">[[item.program_name]] </div>
+                            <div class="seconday">[[item.pv_pbi_fit_duration_years]] </div>
+                            <div class="third">[[item.utility]] </div>
 
-
-                            </div>
+                        </div>
+                        <paper-divider class="divider-for-dark-background"></paper-divider>
+<!-- </template> -->
+</template>
+</iron-list>
 
 
 
@@ -191,7 +189,7 @@
 
     Polymer({
 
-        is: 'codelabs-card3',
+        is: 'energy-incentives',
 
         properties: {
             cardData:{
@@ -207,8 +205,8 @@
             //     this.initialize()
             // });
             //console.log(this);
-            console.log('_cardDataChanged');
-            console.log(this.cardData);
+            console.log('_cardDataChanged energy-incentives');
+            //console.log(this.cardData);
         }
 
     });

@@ -101,7 +101,7 @@ Key                              | Description                            | Usag
 
 		<iron-ajax id="energy"
 		on-error="_handleAjaxError"
-		on-response="_handleAjaxEventfunction"
+		on-response="_handleEnergyAjaxEventfunction"
 		loading-changed="_handleAjaxLoading"
 		url="https://developer.nrel.gov/api/pvwatts/v5.json"
 		handle-as="json"
@@ -291,27 +291,37 @@ Key                              | Description                            | Usag
 						<div id="step8">
 							<iron-collapse id="response">
 
-									<template is="dom-if" if="{{gotAPIResponse}}">
+									<template is="dom-if" if="{{energy.apiResponse}}">
 
-										<codelabs-card heading="Estimated Electricity Production"
-										card-data="[[electricityAPI.apiResponse]]"
-										></codelabs-card>
+										<electricity-production id="energy-out" heading="Estimated Electricity Production"
+										card-data="[[energy.apiResponse]]"
+										></electricity-production>
 									</template>
-									<template is="dom-if" if="{{gotAPIResponse}}">
 
-										<codelabs-card2 heading="Local Contractors"
+									<template is="dom-if" if="{{companies.apiResponse}}">
+
+										<local-contractors id="companies-out" heading="Local Contractors"
 										card-data="[[companies.apiResponse]]"
-										></codelabs-card2>
+										></local-contractors>
 									</template>
 
 
 
-									<template is="dom-if" if="{{gotAPIResponse}}">
+									<template is="dom-if" if="{{cost.apiResponse}}">
 
-										<codelabs-card3 heading="Costs"
+										<electricity-costs id="cost-out" heading="Costs"
 										card-data="[[cost.result]]"
-										></codelabs-card3>
+										></electricity-costs>
 									</template>
+
+									<template is="dom-if" if="{{incentives.apiResponse}}">
+
+										<energy-incentives id="incentives-out" heading="Incentives"
+										card-data="[[incentives]]"
+										></energy-incentives>
+									</template>
+
+
 							</iron-collapse>
 						</div>
 					</div>

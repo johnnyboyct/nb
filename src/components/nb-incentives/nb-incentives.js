@@ -53,9 +53,9 @@ Polymer({
             notify: true,
             value: '',
         },
-        electricityAPI: {
+        energy: {
             type: Object,
-            computed: 'computeFullName(data)',
+            //computed: 'computeFullName(data)',
             reflectToAttribute: true,
             notify: true,
             value: {
@@ -319,9 +319,15 @@ Polymer({
     },
 
     prepAJAXAndSend: function() {
-        this.electricityAPI.key = this.nrel_api_key;
-        this.electricityAPI.url = this.electricityAPI.baseUrl + "?api_key=" + this.electricityAPI.key + "&lat=" + this.latitude + "&lon=" + this.longitude + "&timeframe=monthly&system_capacity=" + this.size_premimum + "&module_type=1&losses=14&array_type=1&tilt=" + this.tilt + "&azimuth=" + this.azimuth ;
-        this.$.energy.url = this.electricityAPI.url;
+        this.surface_area = Number(google.maps.geometry.spherical.computeArea(this.natureArea.getPath()));
+        this.size_premimum = Number(this.surface_area * 0.15);
+        this.size_standard = Number(this.surface_area * 0.10);
+        this.energy.apiResponse.surface_area = this.surface_area.toFixed(0);
+        this.energy.apiResponse.size_premimum = this.size_premimum.toFixed(2);
+        this.energy.apiResponse.size_standard =  this.size_standard.toFixed(2);
+        this.energy.key = this.nrel_api_key;
+        this.energy.url = this.energy.baseUrl + "?api_key=" + this.energy.key + "&lat=" + this.latitude + "&lon=" + this.longitude + "&timeframe=monthly&system_capacity=" + this.size_premimum + "&module_type=1&losses=14&array_type=1&tilt=" + this.tilt + "&azimuth=" + this.azimuth ;
+        this.$.energy.url = this.energy.url;
         var size = 70;
         var minsize = size * 0.8;
         var maxsize = size * 1.2;
@@ -340,7 +346,31 @@ Polymer({
     _handleAjaxLoading: function () {
         console.log('_handleAjaxLoading');
     },
+    _handleEnergyAjaxEventfunction: function(event, response) {
+        var id = event.currentTarget.id;
+        var data = event.detail.response;
 
+            var energyGenerated = data.outputs.ac_annual;
+            var lease = energyGenerated * 0.15 * this.ppa;
+            this.energy.apiResponse = {};
+            this.energy.apiResponse.solrad_annual = data.outputs.solrad_annual;
+            this.energy.apiResponse.ppa = this.ppa;
+            this.energy.apiResponse.energyGenerated = energyGenerated.toFixed(2);
+            this.energy.apiResponse.lease =lease.toFixed(2);
+            this.energy.apiResponse.address =this.address;
+            this.energy.apiResponse.surface_area = this.surface_area.toFixed(0);
+            this.energy.apiResponse.size_premimum = this.size_premimum.toFixed(2);
+            this.energy.apiResponse.size_standard =  this.size_standard.toFixed(2);            
+            this.energy.gotResponse = true;
+            console.log(this.energy.apiResponse);
+
+        //this.notifyPath("energy.apiResponse");
+        this.set('energy.apiResponse', this.energy.apiResponse);
+        this.$.response.show();
+        this.$.location.hide();
+        //this.$.loading.close();
+        //console.log('ajax',this.$[id]);
+    },
     _handleAjaxEventfunction: function(event, response) {
         var id = event.currentTarget.id;
         var data = event.detail.response;
@@ -351,22 +381,31 @@ Polymer({
 
         //if(typeof data.outputs != 'undefined' && typeof data.inputs.incentive_types != 'undefined'){
         if(event.srcElement.id == 'energy'){
+
+
             var energyGenerated = data.outputs.ac_annual;
             var lease = energyGenerated * 0.15 * this.ppa;
-            this.electricityAPI.apiResponse.solrad_annual = data.outputs.solrad_annual;
-            this.electricityAPI.apiResponse.ppa = this.ppa;
-            this.electricityAPI.apiResponse.energyGenerated = energyGenerated.toFixed(2);
-            this.electricityAPI.apiResponse.lease =lease.toFixed(2);
-            this.electricityAPI.apiResponse.address =this.address;
-            this.gotAPIResponse = true;
+            this.energy.apiResponse.solrad_annual = data.outputs.solrad_annual;
+            this.energy.apiResponse.ppa = this.ppa;
+            this.energy.apiResponse.energyGenerated = energyGenerated.toFixed(2);
+            this.energy.apiResponse.lease =lease.toFixed(2);
+            this.energy.apiResponse.address =this.address;
+            this.energy.gotResponse = true;
+            console.log(this.energy.apiResponse);
         }else if(event.srcElement.id == 'incentives'){
+            //console.log(data);
             this.incentives.apiResponse = data.outputs;
-        }else{
-            console.log(data);
+            this.incentives.gotResponse = true;
+        }else if(event.srcElement.id == 'cost'){
+            //console.log(data);
+            this.cost.apiResponse = data;
+            this.cost.gotResponse = true;
+        }else if(event.srcElement.id == 'companies'){
+            //console.log(data);
             this.companies.apiResponse = data;
-            this.gotAPIResponse = true;
+            this.companies.gotResponse = true;
         }
-        this.notifyPath(id);
+        this.notifyPath(id+".apiResponse");
         this.$.response.show();
         this.$.location.hide();
         //this.$.loading.close();
@@ -557,19 +596,12 @@ Polymer({
 
     _onAjaxResponse: function(request) {
         //console.log(request.detail.response)
-        this.electricityAPI.gotResponse = true;
+        this.energy.gotResponse = true;
         this.toggleCollapsibleSection('response');
     },
     _calculateValue: function() {
         //this.$.loading.open();
-        this.surface_area = Number(google.maps.geometry.spherical.computeArea(this.natureArea.getPath()));
-        this.size_premimum = Number(this.surface_area * 0.15);
-        this.size_standard = Number(this.surface_area * 0.10);
-        //document.getElementById('results').innerHTML = "<br><br>RESULTS:<br><br>";
 
-        this.electricityAPI.apiResponse.surface_area = this.surface_area.toFixed(0);
-        this.electricityAPI.apiResponse.size_premimum = this.size_premimum.toFixed(2);
-        this.electricityAPI.apiResponse.size_standard =  this.size_standard.toFixed(2);
         //this.tilt = parseInt(this.$.tilt);
         //this.azimuth = parseInt(this.$.azimuth);
         //this.ppa = this.$.ppa;

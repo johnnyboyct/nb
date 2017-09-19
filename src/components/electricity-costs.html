@@ -3,7 +3,7 @@
 <link rel="import" href="difficulty-indicator.html">
 <link rel="import" href="time-pretty.html">
 
-<dom-module id="codelabs-card2">
+<dom-module id="electricity-costs">
 
     <template>
 
@@ -14,21 +14,21 @@
             --category-secondary: #310824;
         }
 
-                .listItem {
-                  @apply --layout-horizontal;
+        .listItem {
+            @apply --layout-horizontal;
 
-                  margin: 16px 16px 0 16px;
-                  padding: 20px;
-                  border-radius: 8px;
-                  background-color: white;
+            margin: 16px 16px 0 16px;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: white;
 
-                }
+        }
 
         paper-card {
             font-family: 'Ubuntu', Helvetica, Arial;
             height: 100%;
             position: relative;
-                width: 100%;
+            width: 100%;
 
             --paper-card-content: {
                 padding: 0;
@@ -40,17 +40,22 @@
             overflow: hidden;
         }
         .primary {
-          font-size: 16px;
-          font-weight: bold;
+            font-size: 13px;
+            display: inline;
+        }
+        .price{
+            display: inline;
+            font-size: 16px;
+            font-weight: bold;
         }
 
         .secondary {
-          font-size: 14px;
-          margin: 10px 0;
+            font-size: 14px;
+            margin: 10px 0;
         }
         .third {
-          font-size: 14px;
-          margin: 10px 0;
+            font-size: 14px;
+            margin: 10px 0;
         }
         .header {
             /*background: url('https://assets.ubuntu.com/v1/a88aa78c-card_background.png') no-repeat right bottom;
@@ -101,7 +106,7 @@
         }
 
         .summary {
-            height: 235px;
+            height: 135px;
             margin: 0;
         }
 
@@ -134,7 +139,7 @@
             margin-bottom: 5px;
         }
         iron-list {
-          height: 50vh; /* don't use % values unless the parent element is sized. */
+            height: 50vh; /* don't use % values unless the parent element is sized. */
         }
         </style>
 
@@ -156,20 +161,18 @@
                     </p>
                     <div class="summary">
 
-                        <!-- <template is="dom-repeat" items="{{cardData}}"> -->
 
-                            <iron-list items="[[cardData]]">
-<template>
                             <div id="listItem">
-                                <div class="primary">[[item.name]] </div>
-                                <div class="seconday">[[item.address]] </div>
-                                <!-- <div class="third">[[item.type]] </div> -->
+                                <span class="primary">Average Cost per Watt: <div class="price">$[[cardData.avg_cost_pw]]/W </div></span>
+                                <paper-divider class="divider-for-dark-background"></paper-divider>
+                                <span class="primary">Best Average Cost per Watt: <div class="price">$[[cardData.best_avg_cost_pw]]/W </div></span>
+                                <paper-divider class="divider-for-dark-background"></paper-divider>
+                                <span class="primary">Total installs with this cost: <div class="price">[[cardData.total_installs_with_cost]] </div></span>
+
 
                             </div>
-                            <paper-divider class="divider-for-dark-background"></paper-divider>
-<!-- </template> -->
-</template>
-</iron-list>
+
+
 
 
 
@@ -188,7 +191,7 @@
 
     Polymer({
 
-        is: 'codelabs-card2',
+        is: 'electricity-costs',
 
         properties: {
             cardData:{
@@ -196,25 +199,7 @@
                 reflectToAttribute: true,
                 notify: true,
                 observer: '_cardDataChanged'
-            },
-            heading: String,
-            category: Array,
-            firstcategory: {
-                type: String,
-                computed: '_extractFirstCategory(category)',
-            },
-            difficulty: Number,
-            duration: Number,
-            tags: Array,
-            published: {
-                type: String,
-            },
-            url: String,
-            currenturl: String,
-            generateBackParameter: {
-                type: String,
-                computed: '_generateBackParameter(currenturl)',
-            },
+            }
         },
         _cardDataChanged: function() {
             // var mapsAPI = document.querySelector('google-maps-api');
@@ -222,20 +207,9 @@
             //     this.initialize()
             // });
             //console.log(this);
-            console.log('_cardDataChanged');
-            console.log(this.cardData);
-        },
-        _extractFirstCategory: function(category) {
-            let firstcategory = category[0];
-            return firstcategory;
-        },
-
-        _generateBackParameter: function(currenturl) {
-            if (currenturl) {
-                return '?backURL=' + encodeURIComponent(currenturl);
-            }
-            return '';
-        },
+            console.log('_cardDataChanged electricity-costs');
+            //console.log(this.cardData);
+        }
 
     });
 

@@ -3,7 +3,7 @@
 <link rel="import" href="difficulty-indicator.html">
 <link rel="import" href="time-pretty.html">
 
-<dom-module id="codelabs-card">
+<dom-module id="local-contractors">
 
     <template>
 
@@ -21,7 +21,7 @@
                   padding: 20px;
                   border-radius: 8px;
                   background-color: white;
-                  border: 1px solid #ddd;
+
                 }
 
         paper-card {
@@ -136,7 +136,6 @@
         iron-list {
           height: 50vh; /* don't use % values unless the parent element is sized. */
         }
-
         </style>
 
 
@@ -157,57 +156,26 @@
                     </p>
                     <div class="summary">
 
-                        <div id="ppa">
-                            <paper-tooltip for="ppa" position="top">Annual AC system output. (kWhac)</paper-tooltip>
+                        <!-- <template is="dom-repeat" items="{{cardData}}"> -->
 
-                            <a href="https://en.wikipedia.org/wiki/Power_purchase_agreement" target="new">Year 1 PPA Revenue $ [[cardData.lease]]</a>
-                        </div>
-                        <paper-divider class="divider-for-dark-background"></paper-divider>
+                            <iron-list items="[[cardData]]">
+<template>
+                            <div id="listItem">
+                                <div class="primary">[[item.name]] </div>
+                                <div class="seconday">[[item.address]] </div>
+                                <!-- <div class="third">[[item.type]] </div> -->
 
-                        <div id="energyGenerated">
-                            <paper-tooltip for="energyGenerated" position="top">Tooltip text</paper-tooltip>
-                            Estimated Electricity Production [[cardData.energyGenerated]]  kWh per year
-                        </div>
-                        <paper-divider class="divider-for-dark-background"></paper-divider>
+                            </div>
+                            <paper-divider class="divider-for-dark-background"></paper-divider>
+<!-- </template> -->
+</template>
+</iron-list>
 
-                        <div id="solrad_annual">
-                            <paper-tooltip for="solrad_annual" position="top">Annual solar radiation values. (kWh/m2/day)</paper-tooltip>
-                            Annual solar radiation values [[cardData.solrad_annual]]  (kWh/m2/day)
 
-                        </div>
-                        <paper-divider class="divider-for-dark-background"></paper-divider>
-                        <div id="size_premimum">
-                            <paper-tooltip for="size_premimum" position="top">Tooltip text</paper-tooltip>
-                            System size by using premium solar panels (SunPower) [[cardData.size_premimum]] kW
-                        </div>
-                        <paper-divider class="divider-for-dark-background"></paper-divider>
 
-                        <div id="size_standard">
-                            <paper-tooltip for="size_standard" position="top">Tooltip text</paper-tooltip>
-                            System size by using standard solar panels [[cardData.size_standard]] KW
-                        </div>
-                        <paper-divider class="divider-for-dark-background"></paper-divider>
-
-                        <div id="surface_area">
-                            <paper-tooltip for="surface_area" position="top">
-                                Surface Area needed to cover your home.
-                            </paper-tooltip>
-                            Surface Area [[cardData.surface_area]] sq meter
-                        </div>
-                        <!-- </paper-material> -->
                     </div>
                     <div class="horizontal start-justified layout meta">
-                        <div class="difficulty">
-                            Year 1 PPA: $ [[cardData.lease]]
-                            <!-- <difficulty-indicator difficulty="[[difficulty]]"></difficulty-indicator> -->
-                        </div>
-                        <div class="duration">
 
-
-                            <span class="duration__value">
-                                [[cardData.energyGenerated]]  kWh per year
-                            </span>
-                        </div>
                     </div>
                 </div>
 
@@ -220,7 +188,7 @@
 
     Polymer({
 
-        is: 'codelabs-card',
+        is: 'local-contractors',
 
         properties: {
             cardData:{
@@ -254,8 +222,8 @@
             //     this.initialize()
             // });
             //console.log(this);
-            console.log('_cardDataChanged 0');
-            console.log(this.cardData);
+            console.log('_cardDataChanged local-contractors');
+            //console.log(this.cardData);
         },
         _extractFirstCategory: function(category) {
             let firstcategory = category[0];
