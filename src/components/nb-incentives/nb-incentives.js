@@ -24,7 +24,7 @@ Polymer({
         },
         address: {
             type: String,
-            value: '27 West Main StreetNew Britain, CT 06051',
+            value: '27 West Main Street New Britain, CT 06051',
             observer: '_addressChanged'
         },
         elec: {
@@ -360,7 +360,7 @@ Polymer({
             this.energy.apiResponse.address =this.address;
             this.energy.apiResponse.surface_area = this.surface_area.toFixed(0);
             this.energy.apiResponse.size_premimum = this.size_premimum.toFixed(2);
-            this.energy.apiResponse.size_standard =  this.size_standard.toFixed(2);            
+            this.energy.apiResponse.size_standard =  this.size_standard.toFixed(2);
             this.energy.gotResponse = true;
             console.log(this.energy.apiResponse);
 
